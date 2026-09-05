@@ -18,7 +18,7 @@ export default function Offers() {
   ]
 
   return (
-    <main className="flex-grow w-full max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop py-8 md:py-[120px]">
+    <main className="flex-grow w-full max-w-container-max mx-auto px-4 md:px-margin-desktop py-8 md:py-8">
       <Breadcrumbs items={breadcrumbItems} />
       <div className="mb-12">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 border-b border-outline-variant pb-6">
@@ -32,7 +32,7 @@ export default function Offers() {
         <div className="flex-1">
           {products.length > 0 ? (
             <>
-              <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-6 gap-y-12 px-4 md:px-6">
+              <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-6 gap-y-12">
                 {products.map((product) => (
                   <ProductCard key={product._id} product={product} />
                 ))}
