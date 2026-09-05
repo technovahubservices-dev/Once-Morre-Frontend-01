@@ -10,7 +10,7 @@ export default function CartItem({ item }) {
       <div className="w-full sm:w-48 h-48 bg-soft-cream flex-shrink-0">
         <img
           className="w-full h-full object-cover"
-          src={item.image?.startsWith("http") || item.image?.startsWith("data:") ? item.image : `http://localhost:5000${item.image || item.images?.[0] || ""}`}
+          src={item.image?.startsWith("http") || item.image?.startsWith("data:") ? item.image : `https://once-morre-backend.onrender.com${item.image || item.images?.[0] || ""}`}
           alt={item.name}
         />
       </div>

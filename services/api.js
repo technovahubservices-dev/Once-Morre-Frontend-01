@@ -1,4 +1,4 @@
-const API_BASE = 'http://localhost:5000/api'
+const API_BASE = 'https://once-morre-backend.onrender.com/api'
 
 const request = async (url) => {
   const response = await fetch(url)

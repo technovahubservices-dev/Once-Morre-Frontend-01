@@ -111,7 +111,7 @@ export default function RecentOrders() {
                     <div className="flex items-center gap-4">
                       <div className="w-16 h-16 bg-surface-container-low rounded flex-shrink-0 overflow-hidden border border-outline-variant/30">
                         {firstItem?.image && (
-                          <img className="w-full h-full object-cover" src={firstItem.image?.startsWith("http") || firstItem.image?.startsWith("data:") ? firstItem.image : `http://localhost:5000${firstItem.image || firstItem.images?.[0] || ""}`} alt={firstItem.name} />
+                          <img className="w-full h-full object-cover" src={firstItem.image?.startsWith("http") || firstItem.image?.startsWith("data:") ? firstItem.image : `https://once-morre-backend.onrender.com${firstItem.image || firstItem.images?.[0] || ""}`} alt={firstItem.name} />
                         )}
                       </div>
                       <div>
