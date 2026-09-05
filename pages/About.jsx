@@ -5,7 +5,7 @@ export default function About() {
     <>
       {/* Main About Section */}
       <section className="bg-surface-white">
-        <div className="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop py-10 md:py-12">
+        <div className="max-w-container-max mx-auto px-4 md:px-margin-desktop py-10 md:py-12">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-10 items-center">
 
             {/* Images */}
@@ -69,7 +69,7 @@ export default function About() {
 
       {/* Our Story / Values Section */}
       <section className="bg-surface-white">
-        <div className="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop py-16 md:py-24">
+        <div className="max-w-container-max mx-auto px-4 md:px-margin-desktop py-16 md:py-24">
 
           {/* Section Heading */}
           <div className="text-center mb-16">
