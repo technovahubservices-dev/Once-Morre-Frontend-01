@@ -1,0 +1,638 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* =========================================================
+   PROJECT 1 VISUAL SYSTEM
+   Applied to Project 2 without changing functionality
+   ========================================================= */
+
+:root {
+  --primary: #0f5238;
+  --green: #a8e7c5;
+  --cream: #fcf9f8;
+  --white: #ffffff;
+  --ink: #1b1b1b;
+  --muted: #404943;
+  --line: #bfc9c1;
+  --footer: #f0eded;
+  --gold: #795b00;
+  --gold-soft: #ffdf9a;
+
+  --font-body: "Inter", Arial, sans-serif;
+  --font-heading: "Playfair Display", Georgia, serif;
+}
+
+/* =========================================================
+   GLOBAL RESET
+   ========================================================= */
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 88px;
+}
+
+@media (max-width: 767px) {
+  html {
+    scroll-padding-top: 72px;
+  }
+}
+
+html,
+body,
+#root {
+  min-height: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--cream);
+  color: var(--ink);
+  font-family: var(--font-body);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+:focus-visible {
+  outline: 3px solid var(--gold);
+  outline-offset: 3px;
+}
+
+/* =========================================================
+   TYPOGRAPHY
+   ========================================================= */
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-heading);
+  color: var(--primary);
+  margin-top: 0;
+}
+
+p {
+  color: var(--muted);
+}
+
+/* Preserve Tailwind headline classes while using Project 1 typography */
+
+.font-headline-sm,
+.font-headline-md,
+.font-display-lg,
+.font-display-lg-mobile {
+  font-family: var(--font-heading) !important;
+}
+
+.font-body-md,
+.font-body-lg,
+.font-label-sm,
+.font-label-md {
+  font-family: var(--font-body) !important;
+}
+
+/* =========================================================
+   PROJECT 1 COLOR COMPATIBILITY
+   ========================================================= */
+
+.bg-deep-emerald,
+.bg-primary {
+  background-color: var(--primary) !important;
+}
+
+.text-deep-emerald,
+.text-primary {
+  color: var(--primary) !important;
+}
+
+.bg-regal-gold {
+  background-color: var(--gold) !important;
+}
+
+.text-regal-gold {
+  color: var(--gold) !important;
+}
+
+.border-regal-gold {
+  border-color: var(--gold) !important;
+}
+
+.bg-background,
+.bg-surface {
+  background-color: var(--cream) !important;
+}
+
+.text-charcoal-text,
+.text-on-surface {
+  color: var(--ink) !important;
+}
+
+/* =========================================================
+   COMMON SURFACES
+   ========================================================= */
+
+.surface-card {
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: 0.75rem;
+}
+
+.dairy-card {
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: 0.75rem;
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease,
+    border-color 0.25s ease;
+}
+
+.dairy-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 30px -10px rgba(15, 82, 56, 0.2);
+  border-color: var(--green);
+}
+
+/* =========================================================
+   EXISTING PROJECT 2 INTERACTIONS
+   ========================================================= */
+
+.luxury-hover:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 30px -10px rgba(15, 82, 56, 0.15);
+}
+
+.nav-underline,
+.nav-link {
+  position: relative;
+}
+
+.nav-underline::after,
+.nav-link::after {
+  content: "";
+  position: absolute;
+  width: 0;
+  height: 2px;
+  bottom: -4px;
+  left: 0;
+  background-color: var(--primary);
+  transition: width 0.3s ease;
+}
+
+.nav-underline:hover::after,
+.nav-link:hover::after {
+  width: 100%;
+}
+
+.img-hover-zoom {
+  transition: transform 0.7s ease;
+}
+
+.group:hover .img-hover-zoom {
+  transform: scale(1.05);
+}
+
+/* =========================================================
+   BUTTONS
+   ========================================================= */
+
+button.bg-deep-emerald,
+a.bg-deep-emerald {
+  background-color: var(--primary) !important;
+  color: var(--white) !important;
+}
+
+button.bg-deep-emerald:hover,
+a.bg-deep-emerald:hover {
+  background-color: #0b432f !important;
+}
+
+button.bg-regal-gold,
+a.bg-regal-gold {
+  background-color: var(--gold) !important;
+  color: var(--white) !important;
+}
+
+/* =========================================================
+   FORMS
+   ========================================================= */
+
+input:focus,
+textarea:focus,
+select:focus {
+  outline: none;
+  border-color: var(--primary) !important;
+  box-shadow: 0 0 0 3px rgba(168, 231, 197, 0.45);
+}
+
+input,
+textarea,
+select {
+  border-color: var(--line);
+}
+
+/* =========================================================
+   MATERIAL SYMBOLS
+   ========================================================= */
+
+.material-symbols-outlined {
+  font-variation-settings:
+    "FILL" 0,
+    "wght" 300,
+    "GRAD" 0,
+    "opsz" 24;
+}
+
+.icon-fill {
+  font-variation-settings:
+    "FILL" 1,
+    "wght" 400,
+    "GRAD" 0,
+    "opsz" 24;
+}
+
+/* =========================================================
+   MILK / DAIRY VISUAL EFFECTS
+   ========================================================= */
+
+.milk-gradient {
+  background:
+    linear-gradient(
+      135deg,
+      var(--cream) 0%,
+      #f5faf7 50%,
+      var(--green) 100%
+    );
+}
+
+.mist-layer {
+  pointer-events: none;
+}
+
+.cloud-layer {
+  pointer-events: none;
+}
+
+.particle {
+  pointer-events: none;
+}
+
+/* =========================================================
+   SCROLLBAR
+   ========================================================= */
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--cream);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--line);
+  border-radius: 999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--primary);
+}
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 768px) {
+  h1,
+  h2,
+  h3,
+  h4 {
+    line-height: 1.2;
+  }
+
+  body {
+    font-size: 15px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+@keyframes tickerScroll {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+@keyframes heroPan {
+  0% { background-position: 100% center; }
+  100% { background-position: 0% center; }
+}
+
+@keyframes milkFlow {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+@keyframes mistFloat {
+  0% {
+    transform: translateY(0) translateX(0) scale(1);
+    opacity: 0.3;
+  }
+  33% {
+    transform: translateY(-20px) translateX(10px) scale(1.05);
+    opacity: 0.5;
+  }
+  66% {
+    transform: translateY(-10px) translateX(-10px) scale(0.95);
+    opacity: 0.4;
+  }
+  100% {
+    transform: translateY(0) translateX(0) scale(1);
+    opacity: 0.3;
+  }
+}
+
+@keyframes cloudDrift {
+  0% { transform: translateX(-100%) translateY(0); }
+  50% { transform: translateX(100%) translateY(-20px); }
+  100% { transform: translateX(-100%) translateY(0); }
+}
+
+@keyframes particleFloat {
+  0% {
+    transform: translateY(100vh) translateX(0);
+    opacity: 0;
+  }
+  10% { opacity: 1; }
+  90% { opacity: 1; }
+  100% {
+    transform: translateY(-100px) translateX(50px);
+    opacity: 0;
+  }
+}
+
+@keyframes liquidWave {
+  0% { transform: translateX(-100%) rotate(0deg); }
+  100% { transform: translateX(100%) rotate(360deg); }
+}
+
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+.milk-gradient {
+  background: linear-gradient(
+    135deg,
+    var(--cream) 0%,
+    #f5faf7 25%,
+    var(--cream) 50%,
+    #f5faf7 75%,
+    var(--cream) 100%
+  );
+  background-size: 400% 400%;
+  animation: milkFlow 15s ease infinite;
+}
+
+.mist-layer {
+  position: absolute;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(255,255,255,0.8) 0%,
+    rgba(255,255,255,0) 70%
+  );
+  filter: blur(40px);
+  animation: mistFloat 8s ease-in-out infinite;
+}
+
+.cloud-layer {
+  position: absolute;
+  width: 200%;
+  height: 100%;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(255,255,255,0.6) 0%,
+    rgba(255,255,255,0) 70%
+  );
+  filter: blur(60px);
+  animation: cloudDrift 25s linear infinite;
+}
+
+.particle {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  background: rgba(255,255,255,0.6);
+  border-radius: 50%;
+  animation: particleFloat 12s linear infinite;
+  box-shadow: 0 0 6px rgba(255,255,255,0.4);
+}
+
+.liquid-wave {
+  position: absolute;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(
+    circle,
+    rgba(255,255,255,0.3) 0%,
+    rgba(255,255,255,0) 60%
+  );
+  animation: liquidWave 20s linear infinite;
+}
+
+
+/* Subtle scroll reveal */
+.reveal-on-scroll {
+  opacity: 0;
+  transform: translateY(18px);
+  transition: opacity 700ms ease, transform 700ms ease;
+}
+
+.reveal-on-scroll.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal-on-scroll {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
+
+/* Premium buttermilk variant styling */
+.variant-card {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.variant-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 14%;
+  right: 14%;
+  height: 3px;
+  border-radius: 0 0 999px 999px;
+}
+
+.variant-card::after {
+  content: "";
+  position: absolute;
+  width: 130px;
+  height: 130px;
+  top: -75px;
+  right: -55px;
+  border-radius: 50%;
+  border: 1px solid currentColor;
+  opacity: 0.08;
+  pointer-events: none;
+}
+
+.variant-plain {
+  border-color: #b9ddf5;
+  background:
+    radial-gradient(
+      circle at 50% 18%,
+      rgba(112,184,232,0.08),
+      transparent 25%
+    ),
+    #ffffff;
+}
+
+.variant-plain::before {
+  background: #70b8e8;
+}
+
+.variant-plain::after {
+  color: #70b8e8;
+}
+
+.variant-masala {
+  border-color: #c8dfaa;
+  background:
+    radial-gradient(
+      circle at 50% 18%,
+      rgba(121,169,75,0.08),
+      transparent 25%
+    ),
+    #ffffff;
+}
+
+.variant-masala::before {
+  background: #79a94b;
+}
+
+.variant-masala::after {
+  color: #79a94b;
+}
+
+.variant-turmeric {
+  border-color: #efd28b;
+  background:
+    radial-gradient(
+      circle at 50% 18%,
+      rgba(215,169,40,0.09),
+      transparent 25%
+    ),
+    #ffffff;
+}
+
+.variant-turmeric::before {
+  background: #d7a928;
+}
+
+.variant-turmeric::after {
+  color: #d7a928;
+}
+
+.variant-card .variant-icon {
+  position: relative;
+  z-index: 2;
+  border: 1px solid currentColor;
+}
+
+.variant-plain .variant-icon {
+  background: #edf7fd;
+  color: #70b8e8;
+  box-shadow: 0 8px 24px rgba(112,184,232,0.14);
+}
+
+.variant-masala .variant-icon {
+  background: #f1f8e9;
+  color: #79a94b;
+  box-shadow: 0 8px 24px rgba(121,169,75,0.14);
+}
+
+.variant-turmeric .variant-icon {
+  background: #fff8df;
+  color: #d7a928;
+  box-shadow: 0 8px 24px rgba(215,169,40,0.15);
+}
+
+.variant-card h3::after {
+  content: "";
+  display: block;
+  width: 38px;
+  height: 2px;
+  margin: 9px auto 0;
+  border-radius: 999px;
+  background: #c99a24;
+  opacity: 0.8;
+}
+
+.variant-card:hover {
+  box-shadow:
+    0 18px 40px rgba(15,82,56,0.11);
+}
+
+.variant-card:hover .variant-icon {
+  transform: scale(1.08);
+}
+
