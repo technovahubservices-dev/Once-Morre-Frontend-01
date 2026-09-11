@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom'
+import aboutImage from '../assets/images/about image.png'
 
 export default function About() {
   return (
@@ -12,8 +13,8 @@ export default function About() {
             <div className="relative">
               <div className="aspect-[4/5] bg-surface-container-low rounded-sm overflow-hidden">
                 <img
-                  src="https://images.unsplash.com/photo-1500595046743-cd271d694d30?w=800&h=1000&fit=crop"
-                  alt="Our dairy farm"
+                  src={aboutImage}
+                  alt="TEST ABOUT IMAGE"
                   className="w-full h-full object-cover"
                 />
               </div>
@@ -144,3 +145,11 @@ export default function About() {
     </>
   )
 }
+
+
+
+
+
+
+
+

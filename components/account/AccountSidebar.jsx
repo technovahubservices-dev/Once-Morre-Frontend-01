@@ -1,4 +1,4 @@
-import { Link, useNavigate } from 'react-router-dom'
+﻿import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../../context/AuthContext.jsx'
 
 const navItems = [
@@ -20,9 +20,13 @@ export default function AccountSidebar() {
 
   return (
     <aside className="hidden lg:block w-64 flex-shrink-0">
-      <div className="sticky top-32 space-y-2">
-        <h2 className="font-headline-md text-headline-md text-deep-emerald mb-6 pb-2 border-b border-outline-variant">My Account</h2>
-        <nav className="flex flex-col gap-2 font-body-md text-body-md">
+      <div className="sticky top-32">
+        <div className="mb-6">
+          <p className="text-xs uppercase tracking-[0.25em] text-regal-gold font-semibold mb-2">Account</p>
+          <h2 className="font-headline-md text-headline-md text-deep-emerald">My Account</h2>
+        </div>
+
+        <nav className="flex flex-col gap-1 font-body-md text-body-md bg-surface-white border border-outline-variant rounded-sm p-2 shadow-sm">
           {navItems.map((item) => (
             <Link
               key={item.label}
@@ -37,7 +41,7 @@ export default function AccountSidebar() {
               {item.label}
             </Link>
           ))}
-          <button onClick={handleLogout} className="flex items-center gap-3 px-4 py-3 text-error hover:bg-error-container hover:text-error rounded transition-all mt-8">
+          <button onClick={handleLogout} className="w-full flex items-center gap-3 px-4 py-3 text-error hover:bg-error-container hover:text-error rounded transition-all mt-6">
             <span className="material-symbols-outlined">logout</span>
             Sign Out
           </button>
@@ -46,3 +50,4 @@ export default function AccountSidebar() {
     </aside>
   )
 }
+

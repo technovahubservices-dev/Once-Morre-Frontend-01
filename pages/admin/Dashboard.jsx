@@ -177,7 +177,7 @@ export default function Dashboard() {
         padding: 10, /* Adjusted for better spacing in tooltip */
         displayColors: false,
         callbacks: {
-          label: (context) => '₹ ' + context.parsed.y.toLocaleString(),
+          label: (context) => String.fromCharCode(8377) + ' ' + context.parsed.y.toLocaleString(),
         },
       },
     },
@@ -191,7 +191,7 @@ export default function Dashboard() {
         ticks: {
           font: { family: 'Montserrat', size: 12 },
           color: '#44474e',
-          callback: (value) => '₹' + value.toLocaleString(),
+          callback: (value) => String.fromCharCode(8377) + value.toLocaleString(),
         },
         beginAtZero: true,
       },
@@ -239,9 +239,9 @@ export default function Dashboard() {
   }
 
   if (loading) {
-    return (
-      <div className="p-margin-mobile md:p-margin-desktop">
-        <h2 className="font-display-lg-mobile md:font-display-lg text-display-lg-mobile md:text-display-lg font-bold text-primary m-0 mb-4">Dashboard Overview</h2>
+  return (
+      <div className="px-5 py-6 md:px-8 md:py-8 lg:px-10">
+        <h2 className="font-serif text-3xl font-bold tracking-tight text-[#114232] md:text-4xl mb-4">Dashboard Overview</h2>
         <div className="space-y-6">
           {[...Array(3)].map((_, i) => (
             <div key={i} className="bg-surface-container-lowest rounded-xl p-6 animate-pulse">
@@ -255,31 +255,69 @@ export default function Dashboard() {
   }
 
   if (error) {
-    return (
-      <div className="p-margin-mobile md:p-margin-desktop">
-        <h2 className="font-display-lg-mobile md:font-display-lg text-display-lg-mobile md:text-display-lg font-bold text-primary m-0 mb-4">Dashboard Overview</h2>
+  return (
+      <div className="px-5 py-6 md:px-8 md:py-8 lg:px-10">
+        <h2 className="font-serif text-3xl font-bold tracking-tight text-[#114232] md:text-4xl mb-4">Dashboard Overview</h2>
         <div className="bg-error-container border border-error text-error rounded p-4 font-body-md">{error}</div>
       </div>
     )
   }
+  const handleExportReport = () => {
+    const rows = [
+      ['ONCE MORRE Dashboard Report'],
+      [],
+      ['Metric', 'Value'],
+      ['Total Revenue', stats.totalRevenue],
+      ['Total Sales', stats.totalSales],
+      ['Total Customers', stats.totalCustomers],
+      ['Pending Orders', stats.pendingOrders],
+      [],
+      ['Monthly Revenue'],
+      ['Month', 'Revenue'],
+      ...monthlyRevenue.map((item) => [item.label, item.value]),
+      [],
+      ['Sales by Category'],
+      ['Category', 'Sales'],
+      ...categoryData.map((item) => [item.name, item.value]),
+    ]
 
+    const csv = rows
+      .map((row) =>
+        row
+          .map((value) => `"${String(value ?? '').replace(/"/g, '""')}"`)
+          .join(',')
+      )
+      .join('\n')
+
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' })
+    const url = URL.createObjectURL(blob)
+    const link = document.createElement('a')
+
+    link.href = url
+    link.download = `once-morre-dashboard-report-${new Date().toISOString().slice(0, 10)}.csv`
+
+    document.body.appendChild(link)
+    link.click()
+    document.body.removeChild(link)
+    URL.revokeObjectURL(url)
+  }
   return (
-    <div className="p-margin-mobile md:p-margin-desktop">
+    <div className="px-5 py-6 md:px-8 md:py-8 lg:px-10">
       {/* Page Title */}
-      <div className="mb-stack-lg flex flex-col md:flex-row md:items-end justify-between gap-4">
+      <div className="mb-8 flex flex-col gap-5 md:flex-row md:items-center md:justify-between">
         <div>
-          <h2 className="font-display-lg-mobile md:font-display-lg text-display-lg-mobile md:text-display-lg font-bold text-primary m-0">Dashboard Overview</h2>
-          <p className="font-body-md text-body-md text-on-surface-variant mt-2">Welcome back. Here's what's happening with ONCE MORRE today.</p>
+          <h2 className="font-serif text-3xl font-bold tracking-tight text-[#114232] md:text-4xl">Dashboard Overview</h2>
+          <p className="font-body-md text-body-md text-[#66756F] mt-2">Welcome back. Here's what's happening with ONCE MORRE today.</p>
         </div>
         {/* Quick Actions */}
-        <div className="flex gap-3">
-          <button className="flex items-center justify-center px-4 py-2 bg-surface text-primary border border-surface-variant rounded-lg font-label-md text-label-md hover:bg-surface-container transition-colors shadow-sm">
+        <div className="flex flex-wrap gap-3">
+          <button onClick={handleExportReport} className="flex items-center justify-center inline-flex items-center rounded-xl border border-[#E7DFD3] bg-white px-5 py-3 text-sm font-semibold text-[#114232] shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:border-[#C99742] hover:bg-[#FCF9F7]">
             <span className="material-symbols-outlined mr-2 text-[18px]">download</span>
             Export Report
           </button>
           <button
             onClick={() => navigate('/admin/products')}
-            className="flex items-center justify-center px-4 py-2 bg-primary text-on-primary rounded-lg font-label-md text-label-md hover:bg-primary-container transition-colors shadow-sm"
+            className="flex items-center justify-center inline-flex items-center rounded-xl bg-[#114232] px-5 py-3 text-sm font-semibold text-white shadow-[0_8px_20px_rgba(17,66,50,0.18)] transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#1A6A50]"
           >
             <span className="material-symbols-outlined mr-2 text-[18px]">add</span>
             New Product
@@ -288,78 +326,66 @@ export default function Dashboard() {
       </div>
 
       {/* Bento Grid: Key Stat Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-gutter mb-stack-lg">
+      <div className="mb-8 grid grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-4">
         {/* Total Revenue */}
-        <div className="bg-[#fffdf8] rounded-xl p-6 shadow-md border border-[#e5e3de] transition-all relative overflow-hidden group">
-          <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
-            <span className="material-symbols-outlined text-[64px] text-primary">account_balance_wallet</span>
-          </div>
+        <div className="relative overflow-hidden rounded-2xl border border-[#E7DFD3] bg-[#FCF9F7] p-6 shadow-[0_8px_30px_rgba(17,66,50,0.06)] transition-all duration-300 hover:-translate-y-1 hover:border-[#C99742]/40 hover:shadow-[0_18px_40px_rgba(17,66,50,0.10)] group">
           <div className="flex items-center justify-between mb-4 relative z-10">
-            <h3 className="font-label-md text-label-md text-on-surface-variant">Total Revenue</h3>
+            <h3 className="font-label-md text-label-md text-[#66756F]">Total Revenue</h3>
             <span className="flex items-center text-tertiary-fixed-dim bg-tertiary-container px-2 py-1 rounded-full font-label-sm text-label-sm">
               <span className="material-symbols-outlined text-[14px] mr-1">trending_up</span>
               Live
             </span>
           </div>
-          <p className="font-headline-md text-headline-md text-primary font-semibold relative z-10">₹ {stats.totalRevenue.toLocaleString()}</p>
-          <p className="font-label-sm text-label-sm text-outline mt-1 relative z-10">From all orders</p>
+          <p className="font-headline-md text-headline-md text-primary font-semibold relative z-10">&#8377; {stats.totalRevenue.toLocaleString()}</p>
+          <p className="font-label-sm text-label-sm text-[#8A918D] mt-1 relative z-10">From all orders</p>
         </div>
 
         {/* Total Sales */}
-        <div className="bg-[#fffdf8] rounded-xl p-6 shadow-md border border-[#e5e3de] transition-all relative overflow-hidden group">
-          <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
-            <span className="material-symbols-outlined text-[64px] text-primary">shopping_cart</span>
-          </div>
+        <div className="relative overflow-hidden rounded-2xl border border-[#E7DFD3] bg-[#FCF9F7] p-6 shadow-[0_8px_30px_rgba(17,66,50,0.06)] transition-all duration-300 hover:-translate-y-1 hover:border-[#C99742]/40 hover:shadow-[0_18px_40px_rgba(17,66,50,0.10)] group">
           <div className="flex items-center justify-between mb-4 relative z-10">
-            <h3 className="font-label-md text-label-md text-on-surface-variant">Total Sales</h3>
+            <h3 className="font-label-md text-label-md text-[#66756F]">Total Sales</h3>
             <span className="flex items-center text-tertiary-fixed-dim bg-tertiary-container px-2 py-1 rounded-full font-label-sm text-label-sm">
               <span className="material-symbols-outlined text-[14px] mr-1">trending_up</span>
               Live
             </span>
           </div>
           <p className="font-headline-md text-headline-md text-primary font-semibold relative z-10">{stats.totalSales.toLocaleString()}</p>
-          <p className="font-label-sm text-label-sm text-outline mt-1 relative z-10">Total orders</p>
+          <p className="font-label-sm text-label-sm text-[#8A918D] mt-1 relative z-10">Total orders</p>
         </div>
 
         {/* Total Customers */}
-        <div className="bg-[#fffdf8] rounded-xl p-6 shadow-md border border-[#e5e3de] transition-all relative overflow-hidden group">
-          <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
-            <span className="material-symbols-outlined text-[64px] text-primary">group</span>
-          </div>
+        <div className="relative overflow-hidden rounded-2xl border border-[#E7DFD3] bg-[#FCF9F7] p-6 shadow-[0_8px_30px_rgba(17,66,50,0.06)] transition-all duration-300 hover:-translate-y-1 hover:border-[#C99742]/40 hover:shadow-[0_18px_40px_rgba(17,66,50,0.10)] group">
           <div className="flex items-center justify-between mb-4 relative z-10">
-            <h3 className="font-label-md text-label-md text-on-surface-variant">Total Customers</h3>
-            <span className="flex items-center text-outline bg-surface-variant px-2 py-1 rounded-full font-label-sm text-label-sm">
+            <h3 className="font-label-md text-label-md text-[#66756F]">Total Customers</h3>
+            <span className="flex items-center text-[#8A918D] bg-surface-variant px-2 py-1 rounded-full font-label-sm text-label-sm">
               <span className="material-symbols-outlined text-[14px] mr-1">trending_flat</span>
               Stable
             </span>
           </div>
           <p className="font-headline-md text-headline-md text-primary font-semibold relative z-10">{stats.totalCustomers.toLocaleString()}</p>
-          <p className="font-label-sm text-label-sm text-outline mt-1 relative z-10">Registered users</p>
+          <p className="font-label-sm text-label-sm text-[#8A918D] mt-1 relative z-10">Registered users</p>
         </div>
 
         {/* Pending Orders */}
-        <div className="bg-[#fffdf8] rounded-xl p-6 shadow-md border border-[#e5e3de] transition-all relative overflow-hidden group border-l-4 border-error">
-          <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
-            <span className="material-symbols-outlined text-[64px] text-error">pending_actions</span>
-          </div>
+        <div className="relative overflow-hidden rounded-2xl border border-[#E7DFD3] bg-[#FCF9F7] p-6 shadow-[0_8px_30px_rgba(17,66,50,0.06)] transition-all duration-300 hover:-translate-y-1 hover:border-[#C99742]/40 hover:shadow-[0_18px_40px_rgba(17,66,50,0.10)] group border-l-4 border-[#C99742]">
           <div className="flex items-center justify-between mb-4 relative z-10">
-            <h3 className="font-label-md text-label-md text-on-surface-variant">Pending Orders</h3>
+            <h3 className="font-label-md text-label-md text-[#66756F]">Pending Orders</h3>
             <span className="flex items-center text-error bg-error-container px-2 py-1 rounded-full font-label-sm text-label-sm">
               Requires Action
             </span>
           </div>
           <p className="font-headline-md text-headline-md text-primary font-semibold relative z-10">{stats.pendingOrders}</p>
-          <p className="font-label-sm text-label-sm text-outline mt-1 relative z-10">Awaiting processing</p>
+          <p className="font-label-sm text-label-sm text-[#8A918D] mt-1 relative z-10">Awaiting processing</p>
         </div>
       </div>
 
       {/* Complex Layout Section */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-gutter mb-stack-lg">
+      <div className="mb-8 grid grid-cols-1 gap-5 xl:grid-cols-3">
         {/* Main Chart Canvas (2/3 width) */}
-        <div className="lg:col-span-2 bg-surface-container-lowest rounded-xl p-6 shadow-soft">
+        <div className="xl:col-span-2 rounded-2xl border border-[#E7DFD3] bg-white p-6 shadow-[0_8px_30px_rgba(17,66,50,0.06)]">
           <div className="flex justify-between items-center mb-6">
             <h3 className="font-headline-sm text-headline-sm text-primary m-0">Monthly Revenue Trend</h3>
-            <select className="bg-surface border-surface-variant text-on-surface-variant font-label-sm text-label-sm rounded-md focus:ring-primary focus:border-primary">
+            <select className="bg-surface border-surface-variant text-[#66756F] font-label-sm text-label-sm rounded-md focus:ring-primary focus:border-primary">
               <option>All Time</option>
               <option>Last 6 Months</option>
               <option>Last 30 Days</option>
@@ -371,9 +397,9 @@ export default function Dashboard() {
         </div>
 
         {/* Secondary Visuals / Alerts (1/3 width) */}
-        <div className="flex flex-col gap-gutter">
+        <div className="flex flex-col gap-5">
           {/* Pie Chart */}
-          <div className="bg-surface-container-lowest rounded-xl p-6 shadow-soft flex-1">
+          <div className="flex-1 rounded-2xl border border-[#E7DFD3] bg-white p-6 shadow-[0_8px_30px_rgba(17,66,50,0.06)]">
             <h3 className="font-headline-sm text-headline-sm text-primary m-0 mb-4">Sales by Category</h3>
             <div className="h-48 w-full relative flex items-center justify-center">
               <Chart type="doughnut" data={categoryChartData} options={categoryChartOptions} />
@@ -381,7 +407,7 @@ export default function Dashboard() {
           </div>
 
           {/* Low Stock Alerts */}
-          <div className="bg-surface-container-lowest rounded-xl p-6 shadow-soft border-t-4 border-error">
+          <div className="rounded-2xl border border-[#E7DFD3] border-t-4 border-[#C99742] bg-white p-6 shadow-[0_8px_30px_rgba(17,66,50,0.06)]">
             <div className="flex items-center justify-between mb-4">
               <h3 className="font-headline-sm text-headline-sm text-primary m-0 flex items-center">
                 <span className="material-symbols-outlined text-error mr-2">warning</span>
@@ -390,19 +416,19 @@ export default function Dashboard() {
             </div>
             <div className="space-y-4">
               {lowStockAlerts.length === 0 ? (
-                <p className="font-body-md text-body-md text-on-surface-variant">No low stock alerts.</p>
+                <p className="font-body-md text-body-md text-[#66756F]">No low stock alerts.</p>
               ) : (
                 lowStockAlerts.map((item) => {
                   const product = item.product || {}
-                  return (
+  return (
                     <div key={item._id} className="flex items-center justify-between border-b border-surface-variant pb-3 last:border-0 last:pb-0">
                       <div>
                         <p className="font-label-md text-label-md text-primary">{product.name || 'Unknown Product'}</p>
-                        <p className="font-label-sm text-label-sm text-on-surface-variant mt-1">SKU: {product.sku || '—'}</p>
+                        <p className="font-label-sm text-label-sm text-[#66756F] mt-1">SKU: {product.sku || '—'}</p>
                       </div>
                       <div className="text-right">
                         <span className="font-headline-sm text-headline-sm text-error block leading-none">{item.stockQuantity}</span>
-                        <span className="font-label-sm text-label-sm text-outline">Units left</span>
+                        <span className="font-label-sm text-label-sm text-[#8A918D]">Units left</span>
                       </div>
                     </div>
                   )
@@ -411,7 +437,7 @@ export default function Dashboard() {
             </div>
             <button
               onClick={() => navigate('/admin/inventory')}
-              className="w-full mt-4 py-2 border border-surface-variant text-primary font-label-md text-label-md rounded-lg hover:bg-surface-container transition-colors"
+              className="w-full mt-5 w-full rounded-xl border border-[#E7DFD3] py-3 text-sm font-semibold text-[#114232] transition-all hover:border-[#C99742] hover:bg-[#FCF9F7]"
             >
               Manage Inventory
             </button>
@@ -421,7 +447,7 @@ export default function Dashboard() {
 
       {/* Recent Orders Table */}
       <div className="bg-surface-container-lowest rounded-xl shadow-soft overflow-hidden">
-        <div className="p-6 border-b border-surface-variant flex justify-between items-center">
+        <div className="flex items-center justify-between border-b border-[#E7DFD3] bg-[#FCF9F7] p-6">
           <h3 className="font-headline-sm text-headline-sm text-primary m-0">Recent Orders</h3>
           <button
             onClick={() => navigate('/admin/orders')}
@@ -433,7 +459,7 @@ export default function Dashboard() {
         <div className="overflow-x-auto">
           <table className="w-full text-left border-collapse">
             <thead>
-              <tr className="bg-surface text-on-surface-variant font-label-sm text-label-sm uppercase tracking-wider">
+              <tr className="bg-surface text-[#66756F] font-label-sm text-label-sm uppercase tracking-wider">
                 <th className="p-4 font-medium">Order ID</th>
                 <th className="p-4 font-medium">Customer Name</th>
                 <th className="p-4 font-medium">Date</th>
@@ -445,16 +471,16 @@ export default function Dashboard() {
             <tbody className="divide-y divide-surface-variant font-body-md text-body-md">
               {recentOrders.length === 0 ? (
                 <tr>
-                  <td colSpan="6" className="p-4 text-center text-on-surface-variant">No orders found.</td>
+                  <td colSpan="6" className="p-4 text-center text-[#66756F]">No orders found.</td>
                 </tr>
               ) : (
                 recentOrders.map((order) => {
                   const status = order.orderStatus || 'pending'
-                  return (
-                    <tr key={order._id} className="hover:bg-surface/50 transition-colors">
-                      <td className="p-4 text-primary font-medium">#{order._id?.toString().slice(-8).toUpperCase()}</td>
+  return (
+                    <tr key={order._id} className="transition-colors hover:bg-[#FCF9F7]">
+                      <td className="p-4 font-semibold text-[#114232]">#{order._id?.toString().slice(-8).toUpperCase()}</td>
                       <td className="p-4">{order.user?.name || 'Guest'}</td>
-                      <td className="p-4 text-on-surface-variant">
+                      <td className="p-4 text-[#66756F]">
                         {new Date(order.createdAt).toLocaleDateString('en-US', {
                           month: 'short',
                           day: 'numeric',
@@ -463,7 +489,7 @@ export default function Dashboard() {
                           minute: '2-digit',
                         })}
                       </td>
-                      <td className="p-4">₹ {order.total?.toLocaleString()}</td>
+                      <td className="p-4">&#8377; {order.total?.toLocaleString()}</td>
                       <td className="p-4">
                         <span
                           className={`inline-flex items-center px-2.5 py-0.5 rounded-full font-label-sm text-label-sm ${
@@ -492,5 +518,14 @@ export default function Dashboard() {
     </div>
   )
 }
+
+
+
+
+
+
+
+
+
 
 

@@ -1,9 +1,9 @@
-﻿import { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { useCart } from '../../context/CartContext.jsx'
 import { useWishlist } from '../../context/WishlistContext.jsx'
 import { useAuth } from '../../context/AuthContext.jsx'
-import logoImage from '../../assets/images/logo.jpeg'
+import logoImage from '../../assets/images/logonew.png'
 
 export default function Header() {
   const { cartCount } = useCart()
@@ -11,31 +11,33 @@ export default function Header() {
   const { user, isAuthenticated, logout } = useAuth()
   const location = useLocation()
   const navigate = useNavigate()
-  const [searchQuery, setSearchQuery] = useState('')
+  const handleSectionClick = (e, sectionId) => {
+  e.preventDefault()
+  setMobileMenuOpen(false)
+
+  if (location.pathname !== "/") {
+    navigate("/")
+    setTimeout(() => {
+      document.getElementById(sectionId)?.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      })
+    }, 500)
+    return
+  }
+
+  document.getElementById(sectionId)?.scrollIntoView({
+    behavior: "smooth",
+    block: "start",
+  })
+}
+const [searchQuery, setSearchQuery] = useState('')
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
   const isActive = (path) =>
     location.pathname === path
       ? 'border-b-2 border-regal-gold pb-1 text-primary'
       : ''
-
-  useEffect(() => {
-    if (location.pathname !== '/' || !location.hash) return
-
-    const sectionId = decodeURIComponent(location.hash.slice(1))
-    const element = document.getElementById(sectionId)
-
-    if (!element) return
-
-    const timer = window.setTimeout(() => {
-      element.scrollIntoView({
-        behavior: 'smooth',
-        block: 'start',
-      })
-    }, 0)
-
-    return () => window.clearTimeout(timer)
-  }, [location.pathname, location.hash])
 
   const handleSearch = (e) => {
     e.preventDefault()
@@ -56,42 +58,42 @@ export default function Header() {
   }
 
   const sectionLinkClass =
-    'relative pb-2 font-label-caps text-label-caps text-on-surface-variant transition-colors duration-300 hover:text-primary after:absolute after:left-0 after:right-0 after:bottom-0 after:h-px after:origin-left after:scale-x-0 after:bg-regal-gold after:transition-transform after:duration-300 hover:after:scale-x-100'
+    'relative rounded-full px-4 py-2.5 font-label-caps text-label-caps font-semibold tracking-wide text-[#53635D] transition-all duration-300 hover:bg-[#F3EEE8] hover:text-[#114232] hover:shadow-[0_4px_12px_rgba(17,66,50,0.08)]'
 
   return (
     <>
       {/* Desktop Header */}
-      <header className="sticky top-0 z-50 hidden border-b border-line bg-[#fcf9f8] shadow-sm backdrop-blur-md md:block">
-        <div className="mx-auto flex min-h-[76px] w-full max-w-container-max items-center justify-between gap-6 px-margin-desktop">
+      <header className="sticky top-0 z-50 hidden border-b border-[#E7DFD3] bg-[#FCF9F7]/95 shadow-[0_6px_28px_rgba(17,66,50,0.10)] backdrop-blur-xl md:block before:absolute before:left-0 before:right-0 before:top-0 before:h-[2px] before:bg-[#C9A227]">
+        <div className="flex min-h-[88px] w-full items-center justify-between gap-8 pl-8 pr-7 lg:pl-10 lg:pr-9">
           <Link
-            className="flex flex-shrink-0 items-center gap-3"
+            className="group flex flex-shrink-0 items-center gap-4"
             to="/"
             aria-label="ONCE MORRE home"
           >
             <img
               src={logoImage}
               alt="ONCE MORRE logo"
-              className="h-12 w-12 rounded-full border border-line bg-white object-contain p-1"
+              className="h-[72px] w-[150px] object-contain object-left transition-all duration-300 group-hover:scale-[1.03]"
             />
-            <span className="font-display-lg text-[26px] font-semibold tracking-wide text-primary transition-opacity duration-300 hover:opacity-80">
-              ONCE MORRE
-            </span>
           </Link>
 
           <nav
-            className="flex items-center gap-5 lg:gap-7"
+            className="flex items-center gap-1.5 rounded-full border border-[#E7DFD3] bg-white/70 p-1.5 shadow-[0_3px_14px_rgba(17,66,50,0.05)] lg:gap-2"
             aria-label="Main navigation"
           >
-            <Link to="/#home" className={sectionLinkClass}>
+            <Link to="/" onClick={(e) => handleSectionClick(e, "home")} className={sectionLinkClass}>
               Home
             </Link>
-            <Link to="/#about" className={sectionLinkClass}>
+            <Link to="/" onClick={(e) => handleSectionClick(e, "about")} className={sectionLinkClass}>
               About
             </Link>
-            <Link to="/#subscription" className={sectionLinkClass}>
+            <Link to="/collections" className={sectionLinkClass}>
+              Products
+            </Link>
+            <Link to="/" onClick={(e) => handleSectionClick(e, "subscription")} className={sectionLinkClass}>
               Subscription
             </Link>
-            <Link to="/#blogs" className={sectionLinkClass}>
+            <Link to="/" onClick={(e) => handleSectionClick(e, "blogs")} className={sectionLinkClass}>
               Blogs
             </Link>
             <Link to="/offers" className={sectionLinkClass}>
@@ -116,28 +118,16 @@ export default function Header() {
               <button
                 type="submit"
                 aria-label="Search"
-                className="absolute right-1 top-1/2 inline-flex h-8 w-8 -translate-y-1/2 items-center justify-center rounded-full text-muted transition-colors duration-300 hover:bg-gold-soft/40 hover:text-primary"
+                className="absolute right-1 top-1/2 inline-flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full text-[#53635D] transition-all duration-300 hover:bg-[#F3EEE8] hover:text-[#114232]"
               >
                 <span className="material-symbols-outlined text-[19px]">
                   search
                 </span>
               </button>
-            </form>
-
-            <Link
-              to="/collections"
-              aria-label="View all dairy products"
-              className="inline-flex h-10 w-10 items-center justify-center rounded-full text-primary transition-all duration-300 hover:bg-green/50 hover:text-primary"
-            >
-              <span className="material-symbols-outlined text-[23px]">
-                storefront
-              </span>
-            </Link>
-
-            <Link
+            </form><Link
               to="/wishlist"
               aria-label="View wishlist"
-              className="relative inline-flex h-10 w-10 items-center justify-center rounded-full text-primary transition-all duration-300 hover:bg-green/50 hover:text-primary"
+              className="relative inline-flex h-10 w-10 items-center justify-center rounded-full text-[#114232] transition-all duration-300 hover:bg-[#F3EEE8] hover:text-[#C99742] hover:scale-105"
             >
               <span className="material-symbols-outlined text-[23px]">
                 favorite
@@ -155,7 +145,7 @@ export default function Header() {
                 <Link
                   to="/account"
                   aria-label="My account"
-                  className={`inline-flex h-10 w-10 items-center justify-center rounded-full text-primary transition-all duration-300 hover:bg-green/50 ${isActive('/account')}`}
+                  className={`inline-flex h-10 w-10 items-center justify-center rounded-full text-[#114232] transition-all duration-300 hover:bg-[#F3EEE8] hover:text-[#C99742] hover:scale-105 ${isActive('/account')}`}
                 >
                   <span className="material-symbols-outlined text-[23px]">
                     person
@@ -178,7 +168,7 @@ export default function Header() {
               <Link
                 to="/account"
                 aria-label="My account"
-                className={`inline-flex h-10 w-10 items-center justify-center rounded-full text-primary transition-all duration-300 hover:bg-green/50 ${isActive('/account')}`}
+                className={`inline-flex h-10 w-10 items-center justify-center rounded-full text-[#114232] transition-all duration-300 hover:bg-[#F3EEE8] hover:text-[#C99742] hover:scale-105 ${isActive('/account')}`}
               >
                 <span className="material-symbols-outlined text-[23px]">
                   person
@@ -189,7 +179,7 @@ export default function Header() {
             <Link
               to="/cart"
               aria-label="Open cart"
-              className={`relative inline-flex h-10 w-10 items-center justify-center rounded-full text-primary transition-all duration-300 hover:bg-green/50 ${isActive('/cart')}`}
+              className={`relative inline-flex h-10 w-10 items-center justify-center rounded-full text-[#114232] transition-all duration-300 hover:bg-[#F3EEE8] hover:text-[#C99742] hover:scale-105 ${isActive('/cart')}`}
             >
               <span className="material-symbols-outlined text-[23px]">
                 shopping_bag
@@ -227,11 +217,8 @@ export default function Header() {
           <img
             src={logoImage}
             alt="ONCE MORRE logo"
-            className="h-9 w-9 rounded-full border border-line bg-white object-contain p-0.5"
+            className="h-12 w-[105px] object-contain object-left"
           />
-          <span className="font-display-lg text-[20px] tracking-wide text-primary">
-            ONCE MORRE
-          </span>
         </Link>
 
         <div className="flex items-center gap-1">
@@ -287,32 +274,35 @@ export default function Header() {
               aria-label="Mobile navigation"
             >
               <Link
-                to="/#home"
-                onClick={closeMobileMenu}
+                to="/" onClick={(e) => handleSectionClick(e, "home")}
                 className="border-b border-line py-4 text-lg font-medium text-primary transition-colors hover:text-regal-gold"
               >
                 Home
               </Link>
 
               <Link
-                to="/#about"
-                onClick={closeMobileMenu}
+                to="/" onClick={(e) => handleSectionClick(e, "about")}
                 className="border-b border-line py-4 text-lg font-medium text-primary transition-colors hover:text-regal-gold"
               >
                 About
               </Link>
 
               <Link
-                to="/#subscription"
+                to="/collections"
                 onClick={closeMobileMenu}
+                className="border-b border-line py-4 text-lg font-medium text-primary transition-colors hover:text-regal-gold"
+              >
+                Products
+              </Link>
+
+              <Link to="/" onClick={(e) => handleSectionClick(e, "subscription")}
                 className="border-b border-line py-4 text-lg font-medium text-primary transition-colors hover:text-regal-gold"
               >
                 Subscription
               </Link>
 
               <Link
-                to="/#blogs"
-                onClick={closeMobileMenu}
+                to="/" onClick={(e) => handleSectionClick(e, "blogs")}
                 className="border-b border-line py-4 text-lg font-medium text-primary transition-colors hover:text-regal-gold"
               >
                 Blogs
@@ -366,6 +356,62 @@ export default function Header() {
     </>
   )
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

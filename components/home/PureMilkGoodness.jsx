@@ -47,11 +47,11 @@ export default function PureMilkGoodness() {
 
       <div className="relative max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop pt-10 pb-10 md:pt-12 md:pb-12">
         <div className="text-center mb-8">
-          <span className="font-label-caps text-label-caps uppercase tracking-widest text-gold mb-4 block">
-            Our Range
+          <span className="inline-flex items-center px-4 py-2 rounded-full bg-[#F5EFEB] border border-[#E7DFD3] font-label-caps text-[10px] sm:text-[11px] font-bold uppercase tracking-[0.2em] text-[#114232] mb-4 block">
+            OUR RANGE
           </span>
-          <h2 className="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-primary mb-2">
-            Pure Milk Goodness
+          <h2 className="font-serif text-[28px] sm:text-[34px] md:text-[40px] leading-tight font-bold text-[#081E17] mb-2">
+            Pure Milk <span className="italic text-[#1A5642]">Goodness</span>
           </h2>
           <div className="h-[1px] w-12 bg-regal-gold mx-auto mb-6" />
           <p className="font-body-md text-body-md text-muted max-w-2xl mx-auto">
@@ -87,7 +87,7 @@ export default function PureMilkGoodness() {
               <h3 className="font-headline-md text-headline-md text-primary group-hover:text-gold transition-colors duration-300">
                 {category.name}
               </h3>
-              <p className="font-label-caps text-label-caps uppercase tracking-widest text-muted mt-2 flex items-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+              <p className="font-label-caps text-label-caps uppercase tracking-widest text-muted mt-4 flex items-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                 Shop Now <span className="material-symbols-outlined ml-2 text-sm">arrow_forward</span>
               </p>
             </Link>
@@ -124,5 +124,7 @@ function WavyBorder({ side }) {
     </svg>
   )
 }
+
+
 
 

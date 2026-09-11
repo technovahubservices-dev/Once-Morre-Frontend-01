@@ -1,4 +1,4 @@
-import heroImage from '../../assets/images/heropage.jpeg'
+﻿import heroImage from '../../assets/images/heropageNew.png'
 
 export default function Hero() {
   return (
@@ -11,7 +11,7 @@ export default function Hero() {
           <img
             src={heroImage}
             alt="Once Morre buttermilk homepage banner"
-            className="block h-auto w-[90%] mx-auto object-cover"
+            className="block w-full h-auto object-cover"
           />
 
           <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-primary/10 via-transparent to-transparent" />
@@ -20,5 +20,8 @@ export default function Hero() {
     </section>
   )
 }
+
+
+
 
 

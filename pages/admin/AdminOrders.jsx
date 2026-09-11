@@ -116,6 +116,7 @@ export default function AdminOrders() {
               <tr className="border-b border-outline-variant text-on-surface-variant font-label-caps text-label-caps uppercase tracking-wider">
                 <th className="pb-4 font-semibold px-4">Order ID</th>
                 <th className="pb-4 font-semibold px-4">Customer</th>
+                <th className="pb-4 font-semibold px-4">Delivery Address</th>
                 <th className="pb-4 font-semibold px-4">Date</th>
                 <th className="pb-4 font-semibold px-4">Total</th>
                 <th className="pb-4 font-semibold px-4">Status</th>
@@ -140,6 +141,18 @@ export default function AdminOrders() {
                       {order.user?.name || 'Guest'}
                       <p className="text-xs text-on-surface-variant">{order.user?.email || '—'}</p>
                     </td>
+                    <td className="py-4 px-4 text-on-surface">
+                      <div className="text-sm">
+                        <p>{order.shippingAddress?.fullName}</p>
+                        <p className="text-xs text-on-surface-variant">{order.shippingAddress?.phone}</p>
+                        <p className="text-xs text-on-surface-variant">
+                          {order.shippingAddress?.street}, {order.shippingAddress?.city}
+                        </p>
+                        <p className="text-xs text-on-surface-variant">
+                          {order.shippingAddress?.state} - {order.shippingAddress?.zipCode}
+                        </p>
+                      </div>
+                    </td>
                     <td className="py-4 px-4 text-on-surface">{orderDate}</td>
                     <td className="py-4 px-4 text-on-surface tabular-nums">₹ {order.total?.toLocaleString()}</td>
                     <td className="py-4 px-4">
@@ -162,7 +175,7 @@ export default function AdminOrders() {
               })}
               {orders.length === 0 && (
                 <tr>
-                  <td colSpan="6" className="py-12 text-center text-on-surface-variant">
+                  <td colSpan="7" className="py-12 text-center text-on-surface-variant">
                     No orders found.
                   </td>
                 </tr>
@@ -195,6 +208,21 @@ export default function AdminOrders() {
                 {selectedOrder.user?.name || 'Guest'}
               </p>
 
+              {selectedOrder.shippingAddress && (
+                <div className="rounded border border-outline-variant bg-surface-container-low p-4 space-y-2">
+                  <h3 className="font-semibold text-deep-emerald">Delivery Address</h3>
+                  <p>{selectedOrder.shippingAddress.fullName}</p>
+                  <p>{selectedOrder.shippingAddress.phone}</p>
+                  <p>{selectedOrder.shippingAddress.street}</p>
+                  <p>
+                    {selectedOrder.shippingAddress.city},{" "}
+                    {selectedOrder.shippingAddress.state} -{" "}
+                    {selectedOrder.shippingAddress.zipCode}
+                  </p>
+                  <p>{selectedOrder.shippingAddress.country}</p>
+                </div>
+              )}
+
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
                 {orderStatuses.map((status) => (
                   <button
@@ -218,4 +246,6 @@ export default function AdminOrders() {
     </div>
   )
 }
+
+
 

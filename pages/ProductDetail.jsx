@@ -1,12 +1,11 @@
-import { useState, useEffect } from 'react'
+﻿import { useState, useEffect } from 'react'
 import { useParams, Link, useNavigate } from 'react-router-dom'
 import { useCart } from '../context/CartContext.jsx'
 import { useWishlist } from '../context/WishlistContext.jsx'
 import { api } from '../services/api.js'
 import Breadcrumbs from '../components/common/Breadcrumbs.jsx'
 import ProductGallery from '../components/product/ProductGallery.jsx'
-import SizeSelector from '../components/product/SizeSelector.jsx'
-import DeliveryCheck from '../components/product/DeliveryCheck.jsx'
+
 import TrustSignals from '../components/product/TrustSignals.jsx'
 import ProductSpecifications from '../components/product/ProductSpecifications.jsx'
 import ProductCard from '../components/product/ProductCard.jsx'
@@ -15,7 +14,7 @@ export default function ProductDetail() {
   const { id } = useParams()
   const navigate = useNavigate()
   const [product, setProduct] = useState(null)
-  const [selectedSize, setSelectedSize] = useState(null)
+  const [selectedVariant, setSelectedVariant] = useState(null)
   const { addItem } = useCart()
   const { toggleWishlist, isInWishlist } = useWishlist()
 
@@ -25,11 +24,21 @@ export default function ProductDetail() {
 
   if (!product) {
     return (
-      <div className="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop py-24 text-center">
+      <div className="max-w-container-max mx-auto px-6 sm:px-8 md:px-10 lg:px-12 xl:px-14 py-24 text-center">
         <p className="font-body-md text-body-md text-on-surface-variant">Loading...</p>
       </div>
     )
   }
+
+  const displayPrice = product.variants && product.variants.length > 0
+    ? Math.max(
+        ...product.variants.map((variant) => Number(variant.price) || 0)
+      )
+    : Number(product.price) || 0
+
+  const selectedPrice = selectedVariant
+    ? Number(selectedVariant.price)
+    : displayPrice
 
   const breadcrumbItems = [
     { label: 'Home', href: '/' },
@@ -39,7 +48,7 @@ export default function ProductDetail() {
   ]
 
   return (
-    <main className="flex-grow w-full max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop py-8 md:py-16">
+    <main className="flex-grow w-full max-w-container-max mx-auto px-6 sm:px-8 md:px-10 lg:px-12 xl:px-14 py-8 md:py-16">
       <Breadcrumbs items={breadcrumbItems} />
 
       {/* Product Hero Section */}
@@ -72,7 +81,7 @@ export default function ProductDetail() {
           <div className="mb-8">
             <div className="flex items-baseline gap-4">
               {/* // Fix: add tabular-nums and tracking-tight for consistent price alignment and premium look. */}
-              <span className="font-body-md text-body-md text-on-surface tabular-nums">₹ {product.price.toLocaleString()}</span>
+              <span className="font-body-md text-body-md text-on-surface tabular-nums">₹ {selectedPrice.toLocaleString()}</span>
               {product.originalPrice && (
                 <>
                   <span className="font-body-md text-body-md text-on-surface-variant tabular-nums line-through">₹ {product.originalPrice.toLocaleString()}</span>
@@ -83,28 +92,63 @@ export default function ProductDetail() {
             <p className="text-xs text-on-surface-variant mt-1">Inclusive of all taxes</p>
           </div>
 
-          {/* Size Selector */}
-          <SizeSelector sizes={product.sizes} selectedSize={selectedSize} onSelect={setSelectedSize} />
+          {/* Variants */}
+          {product.variants && product.variants.length > 0 && (
+            <div className="mb-8">
+              <h3 className="font-body-md text-body-md text-deep-emerald mb-3">
+                Choose Variant
+              </h3>
+
+              <div className="flex flex-wrap gap-3">
+                {product.variants.map((variant, index) => {
+                  const isSelected = selectedVariant === variant
+
+                  return (
+                    <button
+                      key={index}
+                      type="button"
+                      onClick={() => setSelectedVariant(variant)}
+                      className={`px-5 py-3 border rounded-lg text-sm transition-colors ${
+                        isSelected
+                          ? 'border-deep-emerald bg-deep-emerald text-white'
+                          : 'border-outline-variant text-deep-emerald hover:border-deep-emerald'
+                      }`}
+                    >
+                      <span className="font-semibold">{variant.name}</span>
+
+                      {variant.quantity && (
+                        <span className="ml-2 opacity-80">
+                          ({variant.quantity})
+                        </span>
+                      )}
+
+                      <span className="ml-2">
+                        ₹ {Number(variant.price).toLocaleString()}
+                      </span>
+                    </button>
+                  )
+                })}
+              </div>
+            </div>
+          )}
 
           {/* Actions */}
           <div className="flex flex-col gap-4 mb-8">
             <button
-              onClick={() => addItem(product)}
+              onClick={() => addItem(product, selectedVariant)}
               className="w-full bg-deep-emerald text-white py-4 rounded-lg font-label-caps text-label-caps uppercase hover:bg-surface-tint transition-colors shadow-sm flex items-center justify-center gap-2"
             >
               <span className="material-symbols-outlined text-lg">shopping_bag</span>
               Add to Cart
             </button>
             <button
-              onClick={() => { addItem(product); navigate('/cart') }}
+              onClick={() => { addItem(product, selectedVariant); navigate('/cart') }}
               className="w-full bg-transparent text-deep-emerald border border-outline py-4 rounded-lg font-label-caps text-label-caps uppercase hover:bg-surface-container-low transition-colors"
             >
               Buy Now
             </button>
           </div>
 
-          {/* Delivery Check */}
-          <DeliveryCheck />
 
           {/* Trust Signals */}
           <TrustSignals />
@@ -133,5 +177,12 @@ export default function ProductDetail() {
     </main>
   )
 }
+
+
+
+
+
+
+
 
 

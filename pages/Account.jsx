@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+﻿import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import AccountSidebar from '../components/account/AccountSidebar.jsx'
 import LoyaltyCard from '../components/account/LoyaltyCard.jsx'
@@ -47,7 +47,7 @@ export default function Account() {
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
             <div>
               <p className="font-body-md text-body-md text-on-surface-variant">
-                <span className="font-medium text-deep-emerald">{subscription.plan}</span> · Qty: {subscription.quantity}
+                <span className="font-medium text-deep-emerald">{subscription.plan}</span> Â· Qty: {subscription.quantity}
               </p>
               <p className="font-body-md text-body-md text-on-surface-variant">
                 Offer Price: <span className="font-medium text-deep-emerald">₹{subscription.offerPrice?.toLocaleString()}</span>
@@ -99,3 +99,4 @@ export default function Account() {
     </>
   )
 }
+

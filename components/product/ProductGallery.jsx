@@ -1,55 +1,81 @@
 import { useWishlist } from '../../context/WishlistContext.jsx'
-import { API_BASE } from '../../services/apiConfig.js'
+import { getImageUrl } from '../../utils/imageUrl.js'
 
 export default function ProductGallery({ images, badge, product }) {
-  const getImageUrl = (src) => {
-    if (!src) return ''
-    if (src.startsWith('http://') || src.startsWith('https://') || src.startsWith('data:')) return src
-    const backendBase = API_BASE.replace('/api', '')
-    return backendBase + (src.startsWith('/') ? src : '/' + src)
-  }
+
   const { toggleWishlist, isInWishlist } = useWishlist()
 
   return (
-    <div className="md:col-span-7 flex flex-col md:flex-row gap-4 h-full">
-      <div className="hidden md:flex flex-col gap-4 w-24 flex-shrink-0">
+    <div className="md:col-span-7 flex flex-col md:flex-row gap-4">
+      {/* Thumbnails */}
+      <div className="hidden md:flex w-20 flex-shrink-0 flex-col gap-4">
         {images.map((src, index) => (
           <button
             key={index}
-            className={`w-full aspect-square bg-surface-white rounded-lg overflow-hidden p-1 transition-colors ${
-              index === 0 ? 'border-2 border-regal-gold' : 'border border-outline-variant hover:border-regal-gold'
+            type="button"
+            className={`aspect-square w-full overflow-hidden rounded-lg bg-white p-1 transition-colors ${
+              index === 0
+                ? 'border-2 border-regal-gold'
+                : 'border border-outline-variant hover:border-regal-gold'
             }`}
           >
-            <img className="w-full h-full object-cover rounded" src={getImageUrl(src)} alt={`Thumbnail ${index + 1}`} />
+            <img
+              className="h-full w-full rounded object-cover"
+              src={getImageUrl(src)}
+              alt={`Thumbnail ${index + 1}`}
+            />
           </button>
         ))}
       </div>
-      <div className="flex-grow bg-surface-white rounded-xl overflow-hidden shadow-sm relative group aspect-square md:aspect-[4/5]">
+
+      {/* Main Image */}
+      <div className="relative min-w-0 flex-1 overflow-hidden rounded-xl bg-black shadow-sm">
         {badge && (
-          <div className="absolute top-4 left-4 z-10 bg-surface-white/80 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-label-caps text-primary border border-outline-variant">
+          <div className="absolute left-4 top-4 z-10 rounded-full border border-outline-variant bg-white/90 px-3 py-1 text-xs font-label-caps text-primary backdrop-blur-sm">
             {badge}
           </div>
         )}
+
         {product && (
           <button
+            type="button"
             onClick={() => toggleWishlist(product)}
-            className="absolute top-4 right-4 z-10 p-2 bg-surface-white/80 backdrop-blur-sm rounded-full text-on-surface-variant hover:text-error transition-colors shadow-sm"
+            aria-label={`Add ${product.name} to wishlist`}
+            className="absolute right-4 top-4 z-10 rounded-full bg-white/90 p-2.5 text-on-surface-variant shadow-sm backdrop-blur-sm transition-colors hover:text-regal-gold"
           >
-            <span className={`material-symbols-outlined ${isInWishlist(product.id) ? 'icon-fill text-regal-gold' : ''}`}>favorite</span>
+            <span
+              className={`material-symbols-outlined ${
+                isInWishlist(product._id || product.id)
+                  ? 'icon-fill text-regal-gold'
+                  : ''
+              }`}
+            >
+              favorite
+            </span>
           </button>
         )}
+
         <img
-          className="w-full h-full object-cover img-hover-zoom"
           src={getImageUrl(images[0])}
           alt="Product main image"
+          className="block h-auto max-h-[650px] min-h-[500px] w-full object-cover"
         />
-        <div className="md:hidden absolute bottom-4 left-0 right-0 flex justify-center gap-2 px-4 z-10">
+
+        {/* Mobile dots */}
+        <div className="absolute bottom-4 left-0 right-0 z-10 flex justify-center gap-2 px-4 md:hidden">
           {images.map((_, index) => (
-            <div key={index} className={`w-2 h-2 rounded-full ${index === 0 ? 'bg-regal-gold' : 'bg-outline-variant'}`} />
+            <div
+              key={index}
+              className={`h-2 w-2 rounded-full ${
+                index === 0 ? 'bg-regal-gold' : 'bg-outline-variant'
+              }`}
+            />
           ))}
         </div>
       </div>
     </div>
   )
 }
+
+
 

@@ -1,12 +1,12 @@
 ﻿const offers = [
-  '🥛 Free home delivery on orders above ₹500',
-  '🧀 Fresh paneer - Buy 1 Get 1 Free this week!',
-  '🎯 Pure ghee - Flat 15% off on premium range',
-  '🥛 Farm fresh curd - 20% off on first order',
-  '✨ Use code ONCE50 for ₹50 off on orders above ₹300',
-  '📦 Subscribe & Save - Get 15% off on recurring deliveries',
-  '🌿 100% pure and natural dairy products',
-  '🚚 Express delivery available in your city',
+  'Free home delivery on orders above ₹500',
+  'Fresh paneer - Buy 1 Get 1 Free this week!',
+  'Pure ghee - Flat 15% off on premium range',
+  'Farm fresh curd - 20% off on first order',
+  'Use code ONCE50 for ₹50 off on orders above ₹300',
+  'Subscribe & Save - Get 15% off on recurring deliveries',
+  '100% pure and natural dairy products',
+  'Express delivery available in your city',
 ]
 
 export default function OfferTicker() {
@@ -32,7 +32,7 @@ export default function OfferTicker() {
               aria-hidden="true"
               className="text-gold-soft"
             >
-              ◆
+              &bull;
             </span>
             {offer}
           </span>
@@ -41,3 +41,8 @@ export default function OfferTicker() {
     </section>
   )
 }
+
+
+
+
+

@@ -1,4 +1,4 @@
-const API_BASE = 'https://once-morre-backend.onrender.com/api'
+const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:5000/api'
 
 const request = async (url) => {
   const response = await fetch(url)
@@ -27,6 +27,9 @@ export const api = {
     return data.categories || data
   },
 
+  getSiteSettings: async () => {
+    return await request(`${API_BASE}/site-settings`)
+  },
   getProductsByCategory: async (category) => {
     const data = await request(
       `${API_BASE}/products?category=${encodeURIComponent(category)}`
@@ -60,3 +63,5 @@ export const api = {
     return data.products || []
   },
 }
+
+

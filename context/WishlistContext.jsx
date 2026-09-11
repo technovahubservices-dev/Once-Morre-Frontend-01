@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, useEffect } from 'react'
+﻿import { createContext, useContext, useState, useEffect } from 'react'
 import { useAuth } from './AuthContext.jsx'
 import { API_BASE } from '../services/apiConfig.js'
 
@@ -6,14 +6,22 @@ const WishlistContext = createContext()
 
 function normalizeProduct(p) {
   if (!p) return null
+  const productId = p._id ? p._id.toString() : p.id
+
   return {
-    id: p._id ? p._id.toString() : p.id,
+    _id: productId,
+    id: productId,
     name: p.name,
     price: p.price,
     image: p.image || p.images?.[0] || '',
     images: p.images || [],
     sku: p.sku,
     badge: p.badge,
+    variants: p.variants || [],
+    category: p.category,
+    description: p.description,
+    discount: p.discount,
+    originalPrice: p.originalPrice,
   }
 }
 
@@ -159,6 +167,7 @@ export function useWishlist() {
   }
   return context
 }
+
 
 
 

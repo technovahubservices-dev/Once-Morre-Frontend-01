@@ -2,19 +2,22 @@ import { useState, useEffect, useRef } from 'react'
 import { useAuth } from '../../context/AuthContext.jsx'
 import { adminApi } from '../../services/adminApi.js'
 import { API_BASE } from '../../services/apiConfig.js'
+import { getImageUrl } from '../../utils/imageUrl.js'
 import Pagination from '../../components/common/Pagination.jsx'
 
 const emptyProduct = {
   name: '',
   category: '',
   price: '',
+  originalPrice: '',
+  discount: '',
   description: '',
   images: [''],
   badge: '',
   rating: 0,
   reviews: 0,
   sku: '',
-  sizes: [],
+  variants: [],
   isActive: true,
 }
 
@@ -94,18 +97,34 @@ export default function AdminProducts() {
 
   const openEditModal = (product) => {
     setEditingProduct(product)
-    const images = product.images?.length ? product.images : ['']
+    const images = product.images?.length
+  ? product.images
+      .map((img) =>
+        typeof img === 'string'
+          ? img
+          : img?.url ||
+            img?.imageUrl ||
+            img?.webContentLink ||
+            img?.webViewLink ||
+            (img?.fileId
+              ? `https://drive.google.com/uc?export=view&id=${img.fileId}`
+              : '')
+      )
+      .filter(Boolean)
+  : ['']
     setForm({
       name: product.name || '',
       category: product.category?._id || product.category || '',
       price: product.price || '',
+      originalPrice: product.originalPrice || '',
+      discount: product.discount || '',
       description: product.description || '',
       images,
       badge: product.badge || '',
       rating: product.rating || 0,
       reviews: product.reviews || 0,
       sku: product.sku || '',
-      sizes: product.sizes || [],
+      variants: product.variants || [],
       isActive: product.isActive ?? true,
     })
     setPreviewUrls(images.filter((img) => img && img.trim()))
@@ -122,8 +141,21 @@ export default function AdminProducts() {
       const productData = {
         ...form,
         price: Number(form.price),
+        originalPrice: form.originalPrice ? Number(form.originalPrice) : undefined,
+        discount: form.discount ? Number(form.discount) : undefined,
         images: form.images.filter((img) => img.trim()),
-        sizes: form.sizes.map((s) => Number(s)).filter((s) => !isNaN(s)),
+        variants: form.variants
+          .map((variant) => ({
+            name: variant.name?.trim() || '',
+            quantity: variant.quantity?.trim() || '',
+            price: Number(variant.price),
+          }))
+          .filter(
+            (variant) =>
+              variant.name &&
+              variant.quantity &&
+              !isNaN(variant.price)
+          ),
       }
 
       if (editingProduct) {
@@ -221,14 +253,19 @@ export default function AdminProducts() {
         if (!file.type.startsWith('image/')) continue
 
         const data = await adminApi.uploadProductImage(token, file)
-        const imageUrl = data.data?.imageUrl
+        const imageUrl = data.data?.imageUrl || data.imageUrl
 
         if (imageUrl) {
-          uploadedImages.push(
-            imageUrl.startsWith('http')
+          const previewUrl = imageUrl.includes('drive.google.com/uc?export=view&id=')
+            ? imageUrl.replace(
+                'https://drive.google.com/uc?export=view&id=',
+                'https://drive.google.com/thumbnail?id='
+              ) + '&sz=w1000'
+            : imageUrl.startsWith('http')
               ? imageUrl
               : `${API_BASE.replace('/api', '')}${imageUrl}`
-          )
+
+          uploadedImages.push(imageUrl)
         }
       }
 
@@ -249,9 +286,19 @@ export default function AdminProducts() {
 
   const handleAddImageUrl = () => {
     const url = prompt('Enter image URL:')
+
     if (url && url.trim()) {
-      setForm((prev) => ({ ...prev, images: [...prev.images, url.trim()] }))
-      setPreviewUrls((prev) => [...prev, url.trim()])
+      const imageUrl = url.trim()
+
+      setForm((prev) => ({
+        ...prev,
+        images: [...prev.images.filter((img) => img.trim()), imageUrl],
+      }))
+
+      setPreviewUrls((prev) => [
+        ...prev.filter((img) => img.trim()),
+        imageUrl,
+      ])
     }
   }
 
@@ -333,8 +380,16 @@ export default function AdminProducts() {
                       <div className="flex items-center gap-3">
                         <div className="w-10 h-10 bg-surface-container-low rounded overflow-hidden border border-outline-variant/30 flex-shrink-0">
                           {product.images?.[0] && (
-                            <img className="w-full h-full object-cover" src={product.images[0]} alt={product.name} />
-                          )}
+  <img
+    src={getImageUrl(product.images[0])}
+    alt={product.name}
+    className="w-full h-full object-cover"
+    onError={(e) => {
+      e.currentTarget.src =
+        'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100"><text x="50%" y="50%" text-anchor="middle" dy=".3em" fill="%239ca3af" font-size="20">image</text></svg>'
+    }}
+  />
+)}
                         </div>
                         <div>
                           <p className="font-medium text-deep-emerald">{product.name}</p>
@@ -345,13 +400,15 @@ export default function AdminProducts() {
                     <td className="py-4 px-4 text-on-surface">
                       {product.category?.name || product.category?.slug || '—'}
                     </td>
-                    <td className="py-4 px-4 text-on-surface tabular-nums">₹ {product.price?.toLocaleString()}</td>
+                    <td className="py-4 px-4 text-on-surface tabular-nums">
+                      &#8377;&nbsp;{product.price?.toLocaleString()}
+                    </td>
                     <td className="py-4 px-4 text-on-surface-variant font-mono text-sm">{product.sku || '—'}</td>
                     <td className="py-4 px-4 text-on-surface tabular-nums">
-                      <span className={isOutOfStock ? 'text-red-600 font-medium' : ''}>
-                        {stock === '—' ? '—' : stock.toLocaleString()}
-                      </span>
-                    </td>
+                        <span className={isOutOfStock ? 'text-red-600 font-medium' : ''}>
+                          {stock === '—' ? '—' : stock.toLocaleString()}
+                        </span>
+                      </td>
                     <td className="py-4 px-4">
                       <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-sm font-medium border ${
                         product.isActive
@@ -464,7 +521,7 @@ export default function AdminProducts() {
                 </div>
 
                 <div>
-                  <label className="block font-body-md text-body-md text-deep-emerald mb-2">Price (₹) *</label>
+                  <label className="block font-body-md text-body-md text-deep-emerald mb-2">Price (?) *</label>
                   <input
                     type="number"
                     value={form.price}
@@ -474,7 +531,31 @@ export default function AdminProducts() {
                     min="0"
                     step="0.01"
                   />
+                </div>                <div>
+                  <label className="block font-body-md text-body-md text-deep-emerald mb-2">Original Price (?)</label>
+                  <input
+                    type="number"
+                    min="0"
+                    step="0.01"
+                    value={form.originalPrice}
+                    onChange={(e) => updateForm('originalPrice', e.target.value)}
+                    className="w-full bg-surface-container-low border border-outline-variant rounded px-4 py-3 font-body-md focus:ring-1 focus:ring-regal-gold focus:outline-none"
+                  />
                 </div>
+
+                <div>
+                  <label className="block font-body-md text-body-md text-deep-emerald mb-2">Discount (%)</label>
+                  <input
+                    type="number"
+                    min="0"
+                    max="100"
+                    step="1"
+                    value={form.discount}
+                    onChange={(e) => updateForm('discount', e.target.value)}
+                    className="w-full bg-surface-container-low border border-outline-variant rounded px-4 py-3 font-body-md focus:ring-1 focus:ring-regal-gold focus:outline-none"
+                  />
+                </div>
+
 
                 <div>
                   <label className="block font-body-md text-body-md text-deep-emerald mb-2">SKU</label>
@@ -485,8 +566,124 @@ export default function AdminProducts() {
                     className="w-full bg-surface-container-low border border-outline-variant rounded px-4 py-3 font-body-md focus:ring-1 focus:ring-regal-gold focus:outline-none"
                   />
                 </div>
-
                 <div className="md:col-span-2">
+                  <div className="flex items-center justify-between mb-3">
+                    <label className="block font-body-md text-body-md text-deep-emerald">
+                      Variants
+                    </label>
+
+                    <button
+                      type="button"
+                      onClick={() =>
+                        setForm((prev) => ({
+                          ...prev,
+                          variants: [
+                            ...prev.variants,
+                            { name: '', quantity: '', price: '' },
+                          ],
+                        }))
+                      }
+                      className="text-deep-emerald font-semibold text-sm hover:underline"
+                    >
+                      + Add Variant
+                    </button>
+                  </div>
+
+                  <div className="space-y-3">
+                    {form.variants.map((variant, index) => (
+                      <div
+                        key={index}
+                        className="grid grid-cols-1 md:grid-cols-[1fr_1fr_1fr_auto] gap-3 items-end"
+                      >
+                        <div>
+                          <label className="block text-sm text-on-surface-variant mb-1">
+                            Name
+                          </label>
+                          <input
+                            type="text"
+                            value={variant.name}
+                            onChange={(e) => {
+                              const variants = [...form.variants]
+                              variants[index] = {
+                                ...variants[index],
+                                name: e.target.value,
+                              }
+                              updateForm('variants', variants)
+                            }}
+                            placeholder="e.g. 500ml"
+                            className="w-full bg-surface-container-low border border-outline-variant rounded px-4 py-3 font-body-md focus:ring-1 focus:ring-regal-gold focus:outline-none"
+                          />
+                        </div>
+
+                        <div>
+                          <label className="block text-sm text-on-surface-variant mb-1">
+                            Quantity
+                          </label>
+                          <input
+                            type="text"
+                            value={variant.quantity}
+                            onChange={(e) => {
+                              const variants = [...form.variants]
+                              variants[index] = {
+                                ...variants[index],
+                                quantity: e.target.value,
+                              }
+                              updateForm('variants', variants)
+                            }}
+                            placeholder="e.g. 500ml"
+                            className="w-full bg-surface-container-low border border-outline-variant rounded px-4 py-3 font-body-md focus:ring-1 focus:ring-regal-gold focus:outline-none"
+                          />
+                        </div>
+
+                        <div>
+                          <label className="block text-sm text-on-surface-variant mb-1">
+                            Price (?)
+                          </label>
+                          <input
+                            type="number"
+                            min="0"
+                            step="0.01"
+                            value={variant.price}
+                            onChange={(e) => {
+                              const variants = [...form.variants]
+                              variants[index] = {
+                                ...variants[index],
+                                price: e.target.value,
+                              }
+                              updateForm('variants', variants)
+                            }}
+                            placeholder="e.g. 45"
+                            className="w-full bg-surface-container-low border border-outline-variant rounded px-4 py-3 font-body-md focus:ring-1 focus:ring-regal-gold focus:outline-none"
+                          />
+                        </div>
+
+                        <button
+                          type="button"
+                          onClick={() =>
+                            setForm((prev) => ({
+                              ...prev,
+                              variants: prev.variants.filter(
+                                (_, i) => i !== index
+                              ),
+                            }))
+                          }
+                          className="px-3 py-3 text-error hover:bg-error-container rounded"
+                          title="Remove variant"
+                        >
+                          <span className="material-symbols-outlined">
+                            delete
+                          </span>
+                        </button>
+                      </div>
+                    ))}
+
+                    {form.variants.length === 0 && (
+                      <p className="text-sm text-on-surface-variant py-2">
+                        No variants added. Click "+ Add Variant" to add size/price options.
+                      </p>
+                    )}
+                  </div>
+                </div><div className="md:col-span-2">
                   <label className="block font-body-md text-body-md text-deep-emerald mb-2">Description *</label>
                   <textarea
                     value={form.description}
@@ -503,7 +700,7 @@ export default function AdminProducts() {
                     {previewUrls.map((src, index) => (
                       <div key={index} className="relative group aspect-square bg-surface-container-low rounded-lg overflow-hidden border border-outline-variant/30">
                         <img
-                          src={src}
+                          src={getImageUrl(src)}
                           alt={`Preview ${index + 1}`}
                           className="w-full h-full object-cover"
                           onError={(e) => {
@@ -616,5 +813,10 @@ export default function AdminProducts() {
     </div>
   )
 }
+
+
+
+
+
 
 

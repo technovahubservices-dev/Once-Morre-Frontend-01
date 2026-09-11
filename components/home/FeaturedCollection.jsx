@@ -39,3 +39,4 @@ export default function FeaturedCollection({ title, subtitle, description, image
     </section>
   )
 }
+

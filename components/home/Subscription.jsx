@@ -74,7 +74,7 @@ export default function Subscription() {
   return (
     <section
       id="subscription"
-      className="bg-[#FAF7F2] py-10 md:py-14"
+      className="bg-[#FAF7F2] pt-4 pb-10 md:pt-6 md:pb-14"
       style={{
         backgroundImage:
           'radial-gradient(#E2D9CA 0.75px, transparent 0.75px)',
@@ -312,5 +312,7 @@ export default function Subscription() {
     </section>
   )
 }
+
+
 
 

@@ -1,5 +1,6 @@
 import { useCart } from '../../context/CartContext.jsx'
 import { useWishlist } from '../../context/WishlistContext.jsx'
+import { getImageUrl } from '../../utils/imageUrl.js'
 
 export default function CartItem({ item }) {
   const { updateQuantity, removeItem } = useCart()
@@ -10,7 +11,7 @@ export default function CartItem({ item }) {
       <div className="w-full sm:w-48 h-48 bg-soft-cream flex-shrink-0">
         <img
           className="w-full h-full object-cover"
-          src={item.image?.startsWith("http") || item.image?.startsWith("data:") ? item.image : `https://once-morre-backend.onrender.com${item.image || item.images?.[0] || ""}`}
+          src={getImageUrl(item.image || item.images?.[0])}
           alt={item.name}
         />
       </div>
@@ -18,10 +19,18 @@ export default function CartItem({ item }) {
         <div>
           <div className="flex justify-between items-start mb-2">
             <h3 className="font-headline-md text-headline-md text-deep-emerald">{item.name}</h3>
-            {/* // Fix: consistent ₹ currency and tabular-nums for aligned price digits in cart. */}
-            <p className="font-body-md text-body-md text-on-surface tabular-nums">₹ {item.price.toLocaleString()}</p>
+            {/* // Fix: consistent ? currency and tabular-nums for aligned price digits in cart. */}
+            <p className="font-body-md text-body-md text-on-surface tabular-nums">&#8377;&nbsp;{item.price.toLocaleString()}</p>
           </div>
-          <p className="font-body-md text-body-md text-on-surface-variant mb-1">SKU: {item.sku || item.id}</p>
+          <p className="font-body-md text-body-md text-on-surface-variant mb-1">
+  SKU: {item.sku || item.id}
+</p>
+{item.variant && (
+  <p className="font-body-md text-body-md text-on-surface-variant mb-2">
+    Variant: {item.variant.name}
+    {item.variant.quantity ? ` (${item.variant.quantity})` : ''}
+  </p>
+)}
           <p className="font-body-md text-body-md text-on-surface-variant mb-4">
             {item.description || `${item.category} - Premium quality`}
           </p>
@@ -51,7 +60,7 @@ export default function CartItem({ item }) {
               Move to Wishlist
             </button>
             <button
-              onClick={() => removeItem(item.id)}
+              onClick={() => removeItem(item.id, item.variant)}
               className="font-label-caps text-label-caps text-on-surface-variant hover:text-error transition-colors flex items-center"
             >
               <span className="material-symbols-outlined text-sm mr-1">delete</span>
@@ -63,6 +72,13 @@ export default function CartItem({ item }) {
     </div>
   )
 }
+
+
+
+
+
+
+
 
 
 

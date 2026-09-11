@@ -1,69 +1,227 @@
 import { Link } from 'react-router-dom'
-
+import { API_BASE } from "../../services/apiConfig.js"
 export default function Footer() {
   return (
-    <footer className="bg-soft-cream dark:bg-primary w-full border-t border-outline-variant dark:border-primary-container">
-      <div className="max-w-[1280px] mx-auto px-12 md:px-12 pt-24 pb-12">
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-10">
+    <footer className="bg-[#F7F4EF] w-full border-t border-[#E5DED3]">
+      <div className="max-w-[1280px] mx-auto px-6 md:px-12 pt-16 md:pt-20 pb-8">
+
+        {/* MAIN FOOTER */}
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-10 lg:gap-14">
+
+          {/* BRAND */}
           <div className="md:col-span-4">
-            <Link className="text-headline-lg font-headline-lg text-deep-emerald dark:text-primary-fixed mb-4 inline-block hover:opacity-80 transition-opacity" to="/">
-              Morre Premium Dairy
-            </Link>
-            <p className="text-on-surface-variant font-body-md text-sm leading-relaxed mb-6 max-w-sm">
-              Pure dairy goodness delivered from our farms to your home. Fresh, natural, and crafted with care since generations.
-            </p>
-            <p className="text-on-surface-variant font-body-md text-sm">Â© 2026 Morre Premium Dairy. All Rights Reserved.</p>
+            <div className="relative overflow-hidden rounded-2xl bg-[#0E5943] p-7 md:p-8 shadow-[0_12px_35px_rgba(14,89,67,0.12)]">
+
+              <div className="absolute -right-12 -top-12 h-32 w-32 rounded-full border border-[#D7A64A]/20" />
+              <div className="absolute -right-6 -top-6 h-20 w-20 rounded-full border border-[#D7A64A]/15" />
+
+              <Link
+                to="/"
+                className="relative inline-block font-headline-lg text-2xl md:text-3xl font-bold text-white hover:text-[#E9C47E] transition-colors"
+              >
+                Morre Premium Dairy
+              </Link>
+
+              <div className="mt-4 mb-5 h-1 w-12 rounded-full bg-[#D7A64A]" />
+
+              <p className="relative text-white/80 font-body-md text-sm leading-7 max-w-sm">
+                Pure dairy goodness delivered from our farms to your home. Fresh, natural, and crafted with care since generations.
+              </p>
+
+              <div className="mt-6 flex items-center gap-2 text-[#E9C47E] text-xs font-semibold tracking-widest uppercase">
+                <span className="material-symbols-outlined text-[17px]">
+                  verified
+                </span>
+                Pure & Fresh
+              </div>
+            </div>
           </div>
 
+          {/* QUICK LINKS */}
           <div className="md:col-span-2">
-            <h4 className="font-headline-md text-base text-primary mb-4">QUICK LINKS</h4>
-            <ul className="flex flex-col space-y-3">
-              <li><Link className="text-on-surface-variant dark:text-outline-variant hover:text-primary dark:hover:text-primary-fixed transition-colors text-sm" to="/">HOME</Link></li>
-              <li><Link className="text-on-surface-variant dark:text-outline-variant hover:text-primary dark:hover:text-primary-fixed transition-colors text-sm" to="/about">ABOUT</Link></li>
-              <li><Link className="text-on-surface-variant dark:text-outline-variant hover:text-primary dark:hover:text-primary-fixed transition-colors text-sm" to="/subscription">SUBSCRIPTION</Link></li>
-              <li><Link className="text-on-surface-variant dark:text-outline-variant hover:text-primary dark:hover:text-primary-fixed transition-colors text-sm" to="/blogs">BLOGS</Link></li>
-              <li><Link className="text-on-surface-variant dark:text-outline-variant hover:text-primary dark:hover:text-primary-fixed transition-colors text-sm" to="/offers">OFFER</Link></li>
+            <h4 className="font-headline-md text-sm font-bold text-[#114232] tracking-wide">
+              QUICK LINKS
+            </h4>
+
+            <div className="mt-3 mb-5 h-1 w-8 rounded-full bg-[#C99742]" />
+
+            <ul className="flex flex-col gap-4">
+              <li>
+                <Link className="text-[#566761] hover:text-[#0E5943] transition-colors text-sm" to="/">
+                  HOME
+                </Link>
+              </li>
+              <li>
+                <Link className="text-[#566761] hover:text-[#0E5943] transition-colors text-sm" to="/about">
+                  ABOUT
+                </Link>
+              </li>
+              <li>
+                <Link className="text-[#566761] hover:text-[#0E5943] transition-colors text-sm" to="/subscription">
+                  SUBSCRIPTION
+                </Link>
+              </li>
+              <li>
+                <Link className="text-[#566761] hover:text-[#0E5943] transition-colors text-sm" to="/blogs">
+                  BLOGS
+                </Link>
+              </li>
+              <li>
+                <Link className="text-[#566761] hover:text-[#0E5943] transition-colors text-sm" to="/offers">
+                  OFFER
+                </Link>
+              </li>
             </ul>
           </div>
 
+          {/* SUPPORT */}
           <div className="md:col-span-2">
-            <h4 className="font-headline-md text-base text-primary mb-4">SUPPORT</h4>
-            <ul className="flex flex-col space-y-3">
-              <li><Link className="text-on-surface-variant dark:text-outline-variant hover:text-primary dark:hover:text-primary-fixed transition-colors text-sm" to="/contact-us">Contact</Link></li>
-              <li><Link className="text-on-surface-variant dark:text-outline-variant hover:text-primary dark:hover:text-primary-fixed transition-colors text-sm" to="/faq">FAQ</Link></li>
-              <li><Link className="text-on-surface-variant dark:text-outline-variant hover:text-primary dark:hover:text-primary-fixed transition-colors text-sm" to="#">Shipping Policy</Link></li>
-              <li><Link className="text-on-surface-variant dark:text-outline-variant hover:text-primary dark:hover:text-primary-fixed transition-colors text-sm" to="#">Returns</Link></li>
+            <h4 className="font-headline-md text-sm font-bold text-[#114232] tracking-wide">
+              SUPPORT
+            </h4>
+
+            <div className="mt-3 mb-5 h-1 w-8 rounded-full bg-[#C99742]" />
+
+            <ul className="flex flex-col gap-4">
+              <li>
+                <Link className="text-[#566761] hover:text-[#0E5943] transition-colors text-sm" to="/contact-us">
+                  Contact
+                </Link>
+              </li>
+              <li>
+                <Link className="text-[#566761] hover:text-[#0E5943] transition-colors text-sm" to="/faq">
+                  FAQ
+                </Link>
+              </li>
+              <li>
+                <Link className="text-[#566761] hover:text-[#0E5943] transition-colors text-sm" to="#">
+                  Shipping Policy
+                </Link>
+              </li>
+              <li>
+                <Link className="text-[#566761] hover:text-[#0E5943] transition-colors text-sm" to="#">
+                  Returns
+                </Link>
+              </li>
             </ul>
           </div>
 
+          {/* CONNECTED */}
           <div className="md:col-span-4">
-            <h4 className="font-headline-md text-base text-primary mb-4">CONNECTED</h4>
-            <form className="space-y-3" onSubmit={(e) => e.preventDefault()}>
+            <h4 className="font-headline-md text-sm font-bold text-[#114232] tracking-wide">
+              CONNECTED
+            </h4>
+
+            <div className="mt-3 mb-5 h-1 w-8 rounded-full bg-[#C99742]" />
+
+            <form
+              className="space-y-3"
+              onSubmit={async (e) => {
+                e.preventDefault()
+
+                const form = e.currentTarget
+                const formData = new FormData(form)
+
+                const name = formData.get("name")
+                const email = formData.get("email")
+                const message = formData.get("message")
+
+                try {
+                  const res = await fetch(`${API_BASE}/site-settings`)
+                  const data = await res.json()
+
+                  if (!res.ok) {
+                    throw new Error(data.message || "Failed to get contact email")
+                  }
+
+                  const contactEmail = data.data?.contactEmail
+
+                  if (!contactEmail) {
+                    alert("Contact email is not configured.")
+                    return
+                  }
+
+                  const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(
+                    contactEmail
+                  )}&su=${encodeURIComponent("Footer Contact Message")}&body=${encodeURIComponent(
+                    `Name: ${name}\nEmail: ${email}\n\n${message}`
+                  )}`
+
+                  window.open(gmailUrl, "_blank")
+                  form.reset()
+                } catch (err) {
+                  alert(err.message || "Failed to send message")
+                }
+              }}
+            >
               <input
-                className="w-full border-b border-outline-variant bg-transparent px-0 py-2 focus:outline-none focus:border-primary font-body-md text-sm placeholder-on-surface-variant/50"
+                name="name"
+                required
+                className="w-full rounded-lg border border-[#DED7CC] bg-white px-4 py-3 text-sm text-[#114232] placeholder-[#9A9A9A] outline-none transition-all focus:border-[#0E5943] focus:ring-2 focus:ring-[#0E5943]/10"
                 placeholder="Customer Name"
                 type="text"
               />
+
               <input
-                className="w-full border-b border-outline-variant bg-transparent px-0 py-2 focus:outline-none focus:border-primary font-body-md text-sm placeholder-on-surface-variant/50"
+                name="email"
+                required
+                className="w-full rounded-lg border border-[#DED7CC] bg-white px-4 py-3 text-sm text-[#114232] placeholder-[#9A9A9A] outline-none transition-all focus:border-[#0E5943] focus:ring-2 focus:ring-[#0E5943]/10"
                 placeholder="Email Address"
                 type="email"
               />
+
               <textarea
-                className="w-full border-b border-outline-variant bg-transparent px-0 py-2 focus:outline-none focus:border-primary font-body-md text-sm placeholder-on-surface-variant/50"
+                name="message"
+                required
+                className="w-full rounded-lg border border-[#DED7CC] bg-white px-4 py-3 text-sm text-[#114232] placeholder-[#9A9A9A] outline-none transition-all focus:border-[#0E5943] focus:ring-2 focus:ring-[#0E5943]/10 resize-none"
                 placeholder="Your Message"
-                rows="2"
+                rows="3"
               />
+
               <button
                 type="submit"
-                className="mt-2 bg-deep-emerald text-surface-white font-label-caps text-label-caps uppercase tracking-widest px-6 py-3 rounded hover:bg-deep-emerald/90 transition-colors"
+                className="group mt-1 inline-flex items-center gap-2 rounded-lg bg-[#0E5943] px-6 py-3.5 text-white font-label-caps text-xs font-bold uppercase tracking-widest shadow-[0_6px_18px_rgba(14,89,67,0.16)] hover:bg-[#114232] hover:-translate-y-0.5 transition-all"
               >
                 SEND MESSAGE
+                <span className="material-symbols-outlined text-[17px] transition-transform group-hover:translate-x-1">
+                  arrow_forward
+                </span>
               </button>
             </form>
           </div>
         </div>
+
+        {/* BOTTOM BAR */}
+        <div className="mt-14 rounded-xl bg-[#0E5943] px-6 py-5 md:px-8 shadow-[0_8px_25px_rgba(14,89,67,0.12)]">
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+
+            <p className="text-white/75 font-body-md text-xs sm:text-sm text-center sm:text-left">
+              © 2026 Morre Premium Dairy. All Rights Reserved
+            </p>
+
+            <a
+              href="https://www.technovahub.in/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group flex items-center gap-2 text-xs sm:text-sm font-semibold text-[#E9C47E] hover:text-white transition-colors"
+            >
+              Powered by TechnovaHub
+              <span className="material-symbols-outlined text-[16px] transition-transform group-hover:translate-x-1 group-hover:-translate-y-1">
+                arrow_outward
+              </span>
+            </a>
+
+          </div>
+        </div>
+
       </div>
     </footer>
   )
 }
+
+
+
+
+
+
+

@@ -1,5 +1,7 @@
-import { Routes, Route, useLocation } from 'react-router-dom'
+﻿import { Routes, Route, useLocation } from 'react-router-dom'
+import { useEffect } from 'react'
 import Header from '../components/layout/Header.jsx'
+import OfferTicker from '../components/home/OfferTicker.jsx'
 import Footer from '../components/layout/Footer.jsx'
 import Home from '../pages/Home.jsx'
 import Cart from '../pages/Cart.jsx'
@@ -15,6 +17,7 @@ import CategoryPage from '../pages/CategoryPage.jsx'
 import NewArrivals from '../pages/NewArrivals.jsx'
 import Offers from '../pages/Offers.jsx'
 import Blogs from '../pages/Blogs.jsx'
+import BlogDetail from '../pages/BlogDetail.jsx'
 import Subscription from '../pages/Subscription.jsx'
 import About from '../pages/About.jsx'
 import Search from '../pages/Search.jsx'
@@ -39,10 +42,18 @@ import AdminCategories from '../pages/admin/AdminCategories.jsx'
 import AdminOrders from '../pages/admin/AdminOrders.jsx'
 import AdminInventory from '../pages/admin/AdminInventory.jsx'
 import AdminUsers from '../pages/admin/AdminUsers.jsx'
+import AdminBlogs from '../pages/admin/AdminBlogs.jsx'
 import Charts from '../pages/admin/Charts.jsx'
+import AdminSettings from '../pages/admin/AdminSettings.jsx'
 
 function AppContent() {
   const location = useLocation()
+
+  useEffect(() => {
+    if (!location.hash) {
+      window.scrollTo(0, 0)
+    }
+  }, [location.pathname, location.hash])
   const isAdminRoute = location.pathname.startsWith('/admin')
 
   if (isAdminRoute) {
@@ -56,6 +67,8 @@ function AppContent() {
           <Route path="orders" element={<AdminOrders />} />
           <Route path="inventory" element={<AdminInventory />} />
           <Route path="users" element={<AdminUsers />} />
+          <Route path="blogs" element={<AdminBlogs />} />
+          <Route path="settings" element={<AdminSettings />} />
         </Route>
       </Routes>
     )
@@ -64,6 +77,7 @@ function AppContent() {
   return (
     <>
       <Header />
+      <OfferTicker />
       <main className="flex-1">
         <Routes>
           <Route path="/" element={<Home />} />
@@ -90,6 +104,7 @@ function AppContent() {
           <Route path="/offers" element={<Offers />} />
           <Route path="/subscription" element={<Subscription />} />
           <Route path="/blogs" element={<Blogs />} />
+          <Route path="/blog/:id" element={<BlogDetail />} />
           <Route path="/about" element={<About />} />
           <Route path="/search" element={<Search />} />
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />
@@ -112,3 +127,16 @@ export default function AppRoutes() {
     </div>
   )
 }
+
+
+
+
+
+
+
+
+
+
+
+
+

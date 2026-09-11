@@ -1,9 +1,9 @@
 export default function TrustSignals() {
   const signals = [
-    { icon: 'verified', label: 'Quality Assured' },
-    { icon: 'assignment_return', label: '15 Day Returns' },
-    { icon: 'autorenew', label: 'Lifetime Exchange' },
-    { icon: 'security', label: '1 Yr Warranty' },
+    { icon: 'verified', label: 'Fresh & Hygienic' },
+    { icon: 'assignment_return', label: 'Fresh Delivery' },
+    { icon: 'autorenew', label: 'Quality Ingredients' },
+    { icon: 'security', label: 'Made with Care' },
   ]
 
   return (
@@ -19,4 +19,5 @@ export default function TrustSignals() {
     </div>
   )
 }
+
 

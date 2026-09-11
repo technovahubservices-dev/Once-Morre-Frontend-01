@@ -148,7 +148,7 @@ export default function AccountAddresses() {
       {/* Modal */}
       {modalOpen && (
         <div className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4">
-          <div className="bg-surface-white rounded shadow-xl w-full max-w-lg max-h-[90vh] overflow-y-auto">
+          <div className="bg-[#FCF9F7] rounded-2xl shadow-[0_25px_70px_rgba(0,0,0,0.25)] w-full max-w-lg max-h-[90vh] overflow-y-auto border border-[#E7DFD3]">
             <div className="p-6 border-b border-outline-variant flex items-center justify-between">
               <h2 className="font-headline-md text-headline-md text-deep-emerald">
                 {editingAddress ? 'Edit Address' : 'Add Address'}
@@ -272,3 +272,4 @@ export default function AccountAddresses() {
     </>
   )
 }
+

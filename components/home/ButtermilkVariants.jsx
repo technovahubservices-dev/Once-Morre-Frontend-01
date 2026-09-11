@@ -1,7 +1,7 @@
-import plainMilkImage from '../../assets/images/plain-milk.png.png'
+﻿import plainMilkImage from '../../assets/images/plain-milk.png.png'
 import masalaMilkImage from '../../assets/images/masala-milk.png.png'
 import turmericMilkImage from '../../assets/images/turmeric-milk.png.png'
-import variantsImage from '../../assets/images/variants.webp'
+import variantsImage from '../../assets/images/variantsNew.png'
 
 const variants = [
   {
@@ -62,7 +62,7 @@ const variants = [
 export default function ButtermilkVariants() {
   return (
     <section
-      className="bg-[#FAF7F2] py-10 md:py-14"
+      className="bg-[#FAF7F2] pt-10 pb-6 md:pt-14 md:pb-8"
       style={{
         backgroundImage:
           'radial-gradient(#E2D9CA 0.75px, transparent 0.75px)',
@@ -158,7 +158,7 @@ export default function ButtermilkVariants() {
                     preserveAspectRatio="none"
                     viewBox="0 0 1200 120"
                   >
-                    <path d="M0,0 C150,90 350,-40 500,45 C650,130 900,10 1200,60 L1200,120 L0,120 Z" />
+                    <path d="M0,0 C150,90 350,-40 500,45C650,130 900,10 1200,60 L1200,120 L0,120 Z" />
                   </svg>
                 </div>
               </div>
@@ -210,7 +210,7 @@ export default function ButtermilkVariants() {
 
         {/* EXISTING VARIANTS IMAGE */}
         <div className="mt-8 md:mt-10">
-          <div className="w-full overflow-hidden rounded-2xl border border-[#E7DFD3] bg-white p-2 shadow-[0_8px_28px_rgba(15,82,56,0.08)]">
+          <div className="w-full max-w-[1100px] mx-auto overflow-hidden rounded-2xl border border-[#E7DFD3] bg-white p-2 shadow-[0_8px_28px_rgba(15,82,56,0.08)]">
             <img
               src={variantsImage}
               alt="Plain, masala, and turmeric variants"
@@ -223,8 +223,3 @@ export default function ButtermilkVariants() {
     </section>
   )
 }
-
-
-
-
-

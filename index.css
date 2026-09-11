@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap');
+﻿@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -360,7 +360,6 @@ select {
   0% { transform: translateX(0); }
   100% { transform: translateX(-50%); }
 }
-
 @keyframes heroPan {
   0% { background-position: 100% center; }
   100% { background-position: 0% center; }
@@ -635,4 +634,19 @@ select {
 .variant-card:hover .variant-icon {
   transform: scale(1.08);
 }
+
+.ticker-scroll {
+  animation: tickerScroll 35s linear infinite;
+  will-change: transform;
+}
+@keyframes tickerScroll {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+
+
+
+
+
 

@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import Hero from '../components/home/Hero.jsx'
 import ButtermilkVariants from '../components/home/ButtermilkVariants.jsx'
-import SlowMovingImages from '../components/home/SlowMovingImages.jsx'
 import ProductGrid from '../components/product/ProductGrid.jsx'
 import PureMilkGoodness from '../components/home/PureMilkGoodness.jsx'
 import DairyQualityGuide from '../components/home/DairyQualityGuide.jsx'
@@ -10,7 +9,6 @@ import StorySection from '../components/home/StorySection.jsx'
 import Subscription from '../components/home/Subscription.jsx'
 import CustomerReviews from '../components/home/CustomerReviews.jsx'
 import Blogs from '../components/home/Blogs.jsx'
-import Newsletter from '../components/home/Newsletter.jsx'
 import { api } from '../services/api.js'
 
 export default function Home() {
@@ -22,7 +20,7 @@ export default function Home() {
     api.getCategories().then(setCategories)
   }, [])
 
-  const featuredProducts = products.filter((p) => p.badge === 'Best Seller' || p.reviews > 100)
+  const featuredProducts = products
 
   useEffect(() => {
     const elements = document.querySelectorAll('.reveal-on-scroll')
@@ -47,22 +45,30 @@ export default function Home() {
       <Hero />
 
       {/* 2. Slow Moving Images */}
-      <SlowMovingImages />
+      
 
       {/* 3. Buttermilk Variants */}
       <div className="reveal-on-scroll"><ButtermilkVariants /></div>
 
       {/* 4. Featured Products */}
       <section id="products" className="bg-surface reveal-on-scroll">
-        <div className="max-w-container-max mx-auto px-2 md:px-4 py-10 md:py-12">
-          <div className="text-center mb-8">
-            <span className="font-label-caps text-label-caps uppercase tracking-widest text-regal-gold mb-4 block">
+        <div className="max-w-container-max mx-auto px-2 md:px-4 py-6 md:py-8">
+          <div className="text-center mb-10 md:mb-12">
+            <span className="mb-3 inline-flex items-center gap-3 font-label-caps text-xs font-bold uppercase tracking-[0.25em] text-regal-gold">
+              <span className="h-px w-8 bg-regal-gold" />
               Handpicked For You
+              <span className="h-px w-8 bg-regal-gold" />
             </span>
-            <h2 className="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-deep-emerald mb-2">
+
+            <h2 className="font-headline-lg text-4xl font-bold leading-tight text-deep-emerald md:text-5xl lg:text-6xl">
               Featured Products
             </h2>
-            <div className="h-[1px] w-12 bg-regal-gold mx-auto" />
+
+            <div className="mx-auto mt-4 flex items-center justify-center gap-2">
+              <span className="h-1 w-1 rounded-full bg-regal-gold" />
+              <span className="h-1 w-14 rounded-full bg-regal-gold" />
+              <span className="h-1 w-1 rounded-full bg-regal-gold" />
+            </div>
           </div>
 
           {featuredProducts.length > 0 ? (
@@ -78,13 +84,13 @@ export default function Home() {
       </section>
 
       <section className="bg-surface-white">
-        <div className="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop pb-10 md:pb-12">
+        <div className="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop pb-3 md:pb-4">
           <div className="text-center">
             <Link
               to="/collections"
               className="inline-block bg-deep-emerald text-surface-white font-label-caps text-label-caps uppercase tracking-widest py-3 px-8 rounded hover:bg-deep-emerald/90 transition-colors"
             >
-              Explore All Product
+              Explore All Products
             </Link>
           </div>
         </div>
@@ -107,12 +113,15 @@ export default function Home() {
 
       {/* 10. Pure Milk Goodness */}
       <div className="reveal-on-scroll"><PureMilkGoodness /></div>
- 
-      {/* 11. Newsletter */}
-      <div className="reveal-on-scroll"><Newsletter /></div>
     </>
   )
 }
+
+
+
+
+
+
 
 
 

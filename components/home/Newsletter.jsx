@@ -1,4 +1,4 @@
-import { useState } from 'react'
+﻿import { useState } from 'react'
 
 export default function Newsletter() {
   const [email, setEmail] = useState('')
@@ -15,13 +15,15 @@ export default function Newsletter() {
     <section className="bg-primary">
       <div className="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop py-10 md:py-12">
         <div className="max-w-2xl mx-auto text-center">
-          <span className="text-2xl md:text-3xl font-semibold text-white">
-            Stay Connected
-          </span>
-          <h2 className="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-white mb-4">
-            Join the ONCE MORRE Family
+          <div className="inline-flex items-center px-4 py-2 rounded-full bg-white/10 border border-[#E9C47E]/40 mb-4">
+            <span className="text-[10px] sm:text-[11px] font-bold tracking-[0.2em] uppercase text-[#E9C47E]">
+              STAY CONNECTED
+            </span>
+          </div>
+          <h2 className="font-serif text-[28px] sm:text-[34px] md:text-[40px] leading-tight font-bold text-white mb-4">
+            Join the <span className="italic text-[#E9C47E]">ONCE MORRE Family</span>
           </h2>
-          <div className="h-[1px] w-12 bg-gold mx-auto mb-6" />
+          <div className="mx-auto mb-6 h-1 w-16 rounded-full bg-[#C99742]" />
           <p className="font-body-md text-body-md text-white/80 mb-6">
             Subscribe to receive exclusive updates on new dairy products, special offers, farm stories, and health tips.
           </p>
@@ -46,5 +48,8 @@ export default function Newsletter() {
     </section>
   )
 }
+
+
+
 
 

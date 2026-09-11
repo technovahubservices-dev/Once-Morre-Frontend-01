@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { useAuth } from '../../context/AuthContext.jsx'
 import { API_BASE } from '../../services/apiConfig.js'
+import { getImageUrl } from '../../utils/imageUrl.js'
 
 const statusConfig = {
   pending: { label: 'Pending', color: 'bg-yellow-50 text-yellow-700 border-yellow-200', icon: 'schedule' },
@@ -111,7 +112,7 @@ export default function RecentOrders() {
                     <div className="flex items-center gap-4">
                       <div className="w-16 h-16 bg-surface-container-low rounded flex-shrink-0 overflow-hidden border border-outline-variant/30">
                         {firstItem?.image && (
-                          <img className="w-full h-full object-cover" src={firstItem.image?.startsWith("http") || firstItem.image?.startsWith("data:") ? firstItem.image : `https://once-morre-backend.onrender.com${firstItem.image || firstItem.images?.[0] || ""}`} alt={firstItem.name} />
+                          <img className="w-full h-full object-cover" src={getImageUrl(firstItem.image || firstItem.images?.[0])} alt={firstItem.name} />
                         )}
                       </div>
                       <div>
@@ -146,4 +147,10 @@ export default function RecentOrders() {
     </section>
   )
 }
+
+
+
+
+
+
 

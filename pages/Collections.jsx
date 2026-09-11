@@ -1,9 +1,20 @@
-import { useState, useEffect, useMemo } from 'react'
+﻿import { useState, useEffect, useMemo } from 'react'
 import ProductCard from '../components/product/ProductCard.jsx'
 import Breadcrumbs from '../components/common/Breadcrumbs.jsx'
 import Pagination from '../components/common/Pagination.jsx'
 import SidebarFilters from '../components/common/SidebarFilters.jsx'
 import { api } from '../services/api.js'
+
+
+const getDisplayPrice = (product) => {
+  if (product.variants && product.variants.length > 0) {
+    return Math.max(
+      ...product.variants.map((variant) => Number(variant.price) || 0)
+    )
+  }
+
+  return Number(product.price) || 0
+}
 
 export default function Collections() {
   const [products, setProducts] = useState([])
@@ -56,24 +67,24 @@ export default function Collections() {
     // Minimum price
     if (minPrice !== '') {
       result = result.filter(
-        (product) => Number(product.price) >= Number(minPrice)
+        (product) => getDisplayPrice(product) >= Number(minPrice)
       )
     }
 
     // Maximum price
     if (maxPrice !== '') {
       result = result.filter(
-        (product) => Number(product.price) <= Number(maxPrice)
+        (product) => getDisplayPrice(product) <= Number(maxPrice)
       )
     }
 
     // Sorting
     if (sortBy === 'Price: Low to High') {
-      result.sort((a, b) => Number(a.price) - Number(b.price))
+      result.sort((a, b) => getDisplayPrice(a) - getDisplayPrice(b))
     }
 
     if (sortBy === 'Price: High to Low') {
-      result.sort((a, b) => Number(b.price) - Number(a.price))
+      result.sort((a, b) => getDisplayPrice(b) - getDisplayPrice(a))
     }
 
     if (sortBy === 'New Arrivals') {
@@ -145,9 +156,17 @@ export default function Collections() {
       <Breadcrumbs items={breadcrumbItems} />
 
       <div className="mb-12">
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 border-b border-outline-variant pb-6">
-          <div>
-            <h1 className="font-headline-lg text-headline-lg text-deep-emerald mb-3">
+        <div className="flex flex-col lg:flex-row justify-between items-end gap-8 border-b border-outline-variant pb-8">
+
+          <div className="max-w-3xl">
+            <div className="flex items-center gap-3 mb-5">
+              <span className="h-px w-10 bg-regal-gold"></span>
+              <span className="text-xs uppercase tracking-[0.28em] text-regal-gold font-semibold">
+                Our Collection
+              </span>
+            </div>
+
+            <h1 className="font-headline-lg text-headline-lg text-deep-emerald mb-4">
               Premium Dairy Collection
             </h1>
 
@@ -157,7 +176,7 @@ export default function Collections() {
             </p>
           </div>
 
-          <div className="flex items-center space-x-4">
+          <div className="flex items-center gap-5 flex-shrink-0">
             <span className="text-on-surface-variant text-sm whitespace-nowrap">
               Showing {showingFrom}-{showingTo} of{' '}
               {filteredAndSortedProducts.length} Items
@@ -165,7 +184,7 @@ export default function Collections() {
 
             <div className="relative">
               <select
-                className="appearance-none bg-transparent border border-outline-variant rounded-none py-2 pl-4 pr-10 text-sm focus:outline-none focus:ring-1 focus:ring-deep-emerald focus:border-deep-emerald cursor-pointer"
+                className="appearance-none bg-surface-white border border-outline-variant py-3 pl-4 pr-11 text-sm focus:outline-none focus:ring-1 focus:ring-deep-emerald focus:border-deep-emerald cursor-pointer"
                 value={sortBy}
                 onChange={(e) => setSortBy(e.target.value)}
               >
@@ -179,14 +198,14 @@ export default function Collections() {
                 <option value="New Arrivals">New Arrivals</option>
               </select>
 
-              <span className="material-symbols-outlined absolute right-2 top-1/2 -translate-y-1/2 pointer-events-none text-on-surface-variant">
+              <span className="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-on-surface-variant">
                 expand_more
               </span>
             </div>
           </div>
+
         </div>
       </div>
-
       <div className="flex flex-col md:flex-row gap-12">
         <SidebarFilters
           categories={categories}
@@ -236,3 +255,9 @@ export default function Collections() {
     </main>
   )
 }
+
+
+
+
+
+

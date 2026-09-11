@@ -1,4 +1,4 @@
-import { useAuth } from '../../context/AuthContext.jsx'
+﻿import { useAuth } from '../../context/AuthContext.jsx'
 
 export default function LoyaltyCard() {
   const { user } = useAuth()
@@ -12,10 +12,10 @@ export default function LoyaltyCard() {
   const pointsToNext = currentThreshold - points
 
   return (
-    <section className="bg-surface-white p-8 border border-regal-gold/30 rounded shadow-sm flex flex-col md:flex-row items-center justify-between gap-8 relative overflow-hidden">
+    <section className="bg-surface-white p-8 md:p-10 border border-regal-gold/30 rounded-sm shadow-sm flex flex-col md:flex-row items-center justify-between gap-8 relative overflow-hidden">
       <div className="absolute inset-0 bg-gradient-to-r from-soft-cream to-surface-white opacity-50 pointer-events-none" />
       <div className="relative z-10 flex flex-col md:flex-row items-center gap-6">
-        <div className="w-20 h-20 rounded-full bg-soft-cream border border-regal-gold flex items-center justify-center flex-shrink-0">
+        <div className="w-20 h-20 rounded-full bg-soft-cream border border-regal-gold/70 flex items-center justify-center flex-shrink-0 shadow-sm">
           <span className="material-symbols-outlined text-4xl text-regal-gold">diamond</span>
         </div>
         <div>
@@ -31,7 +31,7 @@ export default function LoyaltyCard() {
       </div>
       <div className="relative z-10 text-center md:text-right">
         <p className="font-label-caps text-label-caps text-on-surface-variant uppercase tracking-widest mb-1">Current Balance</p>
-        <p className="font-display-lg text-headline-lg text-deep-emerald">
+        <p className="font-display-lg text-headline-lg text-deep-emerald mt-1">
           {points.toLocaleString()} <span className="text-body-md text-on-surface-variant">pts</span>
         </p>
         <button className="mt-2 text-sm text-regal-gold underline hover:text-deep-emerald transition-colors">View Rewards</button>
@@ -39,3 +39,4 @@ export default function LoyaltyCard() {
     </section>
   )
 }
+

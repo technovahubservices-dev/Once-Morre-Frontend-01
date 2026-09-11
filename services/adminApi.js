@@ -1,6 +1,31 @@
 import { API_BASE } from './apiConfig.js'
 
 export const adminApi = {
+  getSiteSettings: async (token) => {
+    const res = await fetch(`${API_BASE}/site-settings`, {
+      headers: { Authorization: `Bearer ${token}` },
+      credentials: 'include',
+    })
+    const data = await res.json()
+    if (!res.ok) throw new Error(data.message || 'Failed to fetch site settings')
+    return data
+  },
+
+  updateSiteSettings: async (token, settings) => {
+    const res = await fetch(`${API_BASE}/site-settings`, {
+      method: 'PUT',
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+      credentials: 'include',
+      body: JSON.stringify(settings),
+    })
+    const data = await res.json()
+    if (!res.ok) throw new Error(data.message || 'Failed to update site settings')
+    return data
+  },
+
   uploadProductImage: async (token, file) => {
     const formData = new FormData()
     formData.append('image', file)
@@ -357,5 +382,77 @@ export const adminApi = {
     if (!res.ok) throw new Error(data.message || 'Failed to fetch users')
     return data
   },
+
+  uploadBlogImage: async (token, file) => {
+    const formData = new FormData()
+    formData.append('image', file)
+
+    const res = await fetch(`${API_BASE}/blogs/upload-image`, {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      credentials: 'include',
+      body: formData,
+    })
+
+    const data = await res.json()
+    if (!res.ok) throw new Error(data.message || 'Failed to upload blog image')
+    return data
+  },
+  getBlogs: async (token) => {
+    const res = await fetch(`${API_BASE}/blogs`, {
+      headers: { Authorization: `Bearer ${token}` },
+      credentials: 'include',
+    })
+    const data = await res.json()
+    if (!res.ok) throw new Error(data.message || 'Failed to fetch blogs')
+    return data
+  },
+
+  createBlog: async (token, blogData) => {
+    const res = await fetch(`${API_BASE}/blogs`, {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+      credentials: 'include',
+      body: JSON.stringify(blogData),
+    })
+    const data = await res.json()
+    if (!res.ok) throw new Error(data.message || 'Failed to create blog')
+    return data
+  },
+
+  updateBlog: async (token, id, blogData) => {
+    const res = await fetch(`${API_BASE}/blogs/${id}`, {
+      method: 'PUT',
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+      credentials: 'include',
+      body: JSON.stringify(blogData),
+    })
+    const data = await res.json()
+    if (!res.ok) throw new Error(data.message || 'Failed to update blog')
+    return data
+  },
+
+  deleteBlog: async (token, id) => {
+    const res = await fetch(`${API_BASE}/blogs/${id}`, {
+      method: 'DELETE',
+      headers: { Authorization: `Bearer ${token}` },
+      credentials: 'include',
+    })
+    const data = await res.json()
+    if (!res.ok) throw new Error(data.message || 'Failed to delete blog')
+    return data
+  },
 }
+
+
+
+
 

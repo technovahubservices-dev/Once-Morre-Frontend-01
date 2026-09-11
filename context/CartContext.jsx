@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, useEffect } from 'react'
+﻿import { createContext, useContext, useState, useEffect } from 'react'
 import { useAuth } from './AuthContext.jsx'
 import { API_BASE } from '../services/apiConfig.js'
 
@@ -18,6 +18,7 @@ export function CartProvider({ children }) {
       price: item.price || 0,
       quantity: item.quantity || 1,
       size: item.size,
+      variant: item.variant || null,
     }))
 
     localStorage.setItem('cart', JSON.stringify(storageItems))
@@ -51,6 +52,7 @@ export function CartProvider({ children }) {
           price: item.price || 0,
           quantity: item.quantity || 1,
           size: item.size,
+      variant: item.variant || null,
         }))
 
         localStorage.setItem('cart', JSON.stringify(storageItems))
@@ -100,6 +102,7 @@ export function CartProvider({ children }) {
             sku: item.product?.sku || item.sku,
             quantity: item.quantity || 1,
             size: item.size,
+      variant: item.variant || null,
             category: item.product?.category,
             description: item.product?.description,
             badge: item.product?.badge,
@@ -153,6 +156,7 @@ export function CartProvider({ children }) {
             productId,
             quantity: item.quantity || 1,
             size: item.size,
+      variant: item.variant || null,
           }),
         })
       } catch {
@@ -164,8 +168,7 @@ export function CartProvider({ children }) {
     return true
   }
 
-  const addItem = (product) => {
-    // Products must come from MongoDB.
+  const addItem = (product, selectedVariant = null) => {
     const productId = product?._id?.toString()
 
     if (!productId || productId.length !== 24) {
@@ -173,14 +176,26 @@ export function CartProvider({ children }) {
       return
     }
 
+    const variantPrice = selectedVariant
+      ? Number(selectedVariant.price)
+      : Number(product.price)
+
+    const variantName = selectedVariant?.name || ''
+    const variantQuantity = selectedVariant?.quantity || ''
+
     setItems((prev) => {
       const existing = prev.find(
-        (item) => item._id === productId
+        (item) =>
+          item._id === productId &&
+          (item.variant?.name || '') === variantName &&
+          (item.variant?.quantity || '') === variantQuantity
       )
 
       if (existing) {
         const next = prev.map((item) =>
-          item._id === productId
+          item._id === productId &&
+          (item.variant?.name || '') === variantName &&
+          (item.variant?.quantity || '') === variantQuantity
             ? {
                 ...item,
                 quantity: (item.quantity || 0) + 1,
@@ -198,7 +213,15 @@ export function CartProvider({ children }) {
           ...product,
           _id: productId,
           id: productId,
+          price: variantPrice,
           quantity: 1,
+          variant: selectedVariant
+            ? {
+                name: selectedVariant.name,
+                quantity: selectedVariant.quantity || '',
+                price: variantPrice,
+              }
+            : null,
         },
       ]
 
@@ -207,11 +230,22 @@ export function CartProvider({ children }) {
     })
   }
 
-  const removeItem = (productId) => {
+  const removeItem = (productId, variant = null) => {
     setItems((prev) => {
-      const next = prev.filter(
-        (item) => item._id !== productId
-      )
+      const next = prev.filter((item) => {
+        if (item._id !== productId) return true
+
+        const itemVariantName = item.variant?.name || ''
+        const itemVariantQuantity = item.variant?.quantity || ''
+
+        const removeVariantName = variant?.name || ''
+        const removeVariantQuantity = variant?.quantity || ''
+
+        return !(
+          itemVariantName === removeVariantName &&
+          itemVariantQuantity === removeVariantQuantity
+        )
+      })
 
       saveLocal(next)
       return next
@@ -279,6 +313,10 @@ export function useCart() {
 
   return context
 }
+
+
+
+
 
 
 

@@ -1,3 +1,4 @@
+import { getImageUrl } from '../../utils/imageUrl.js'
 import { useState, useEffect } from 'react'
 import { useAuth } from '../../context/AuthContext.jsx'
 import { adminApi } from '../../services/adminApi.js'
@@ -267,7 +268,7 @@ export default function AdminInventory() {
                       <div className="flex items-center gap-3">
                         <div className="w-10 h-10 bg-surface-container-low rounded overflow-hidden border border-outline-variant/30 flex-shrink-0">
                           {product.images?.[0] && (
-                            <img className="w-full h-full object-cover" src={product.images[0]} alt={product.name} />
+                            <img className="w-full h-full object-cover" src={getImageUrl(product.images[0])} alt={product.name} />
                           )}
                         </div>
                         <div>
@@ -294,18 +295,18 @@ export default function AdminInventory() {
                         <button
                           onClick={() => openAdjustModal(item)}
                           className="inline-flex items-center gap-1 px-3 py-2 bg-deep-emerald/10 text-deep-emerald border border-deep-emerald/20 rounded font-body-md text-sm hover:bg-deep-emerald/20 transition-colors"
-                          title="Adjust Stock"
+                          title="Update Stock"
                         >
                           <span className="material-symbols-outlined text-[16px]">swap_vert</span>
-                          Adjust
+                          Update Stock
                         </button>
                         <button
                           onClick={() => openEditModal(item)}
                           className="inline-flex items-center gap-1 px-3 py-2 bg-surface-container-low border border-outline-variant rounded font-body-md text-sm hover:bg-surface-container-high transition-colors"
-                          title="Edit Threshold"
+                          title="Edit Low Stock Limit"
                         >
                           <span className="material-symbols-outlined text-[16px]">edit</span>
-                          Threshold
+                          Low Stock Limit
                         </button>
                       </div>
                     </td>
@@ -350,7 +351,7 @@ export default function AdminInventory() {
               <div className="flex items-center gap-4 mb-6 p-4 bg-surface-container-low rounded-lg">
                 <div className="w-12 h-12 bg-[#fffdf8] rounded overflow-hidden border border-outline-variant/30 flex-shrink-0">
                   {(adjustingItem.product?.images?.[0] || adjustingItem.product?.image) && (
-                    <img className="w-full h-full object-cover" src={adjustingItem.product.images?.[0] || adjustingItem.product.image} alt={adjustingItem.product?.name} />
+                    <img className="w-full h-full object-cover" src={getImageUrl(adjustingItem.product.images?.[0] || adjustingItem.product.image)} alt={adjustingItem.product?.name} />
                   )}
                 </div>
                 <div>
@@ -514,7 +515,7 @@ export default function AdminInventory() {
                   onChange={(e) => updateForm('product', e.target.value)}
                   className="w-full bg-surface-container-low border border-outline-variant rounded px-4 py-3 font-body-md focus:ring-1 focus:ring-regal-gold focus:outline-none"
                   required
-                  disabled={!!editingInventory}
+                  
                 >
                   <option value="">Select product</option>
                   {products.map((product) => (
@@ -539,15 +540,21 @@ export default function AdminInventory() {
                 </div>
 
                 <div>
-                  <label className="block font-body-md text-body-md text-deep-emerald mb-2">Low Stock Threshold *</label>
-                  <input
-                    type="number"
+                  <label className="block font-body-md text-body-md text-deep-emerald mb-2">Low Stock Limit *</label>
+                  <select
                     value={form.lowStockThreshold}
                     onChange={(e) => updateForm('lowStockThreshold', e.target.value)}
-                    className="w-full bg-surface-container-low border border-outline-variant rounded px-4 py-3 font-body-md focus:ring-1 focus:ring-regal-gold focus:outline-none"
+                    className="w-full bg-surface-container-low border border-outline-variant rounded px-4 py-3 font-body-md text-on-surface focus:ring-1 focus:ring-regal-gold focus:outline-none"
                     required
-                    min="0"
-                  />
+                  >
+                    <option value="">Select low stock limit</option>
+                    <option value="5">5 units</option>
+                    <option value="10">10 units</option>
+                    <option value="15">15 units</option>
+                    <option value="20">20 units</option>
+                    <option value="25">25 units</option>
+                    <option value="50">50 units</option>
+                  </select>
                 </div>
               </div>
 
@@ -574,4 +581,11 @@ export default function AdminInventory() {
     </div>
   )
 }
+
+
+
+
+
+
+
 
