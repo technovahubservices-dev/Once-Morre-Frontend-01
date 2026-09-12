@@ -80,4 +80,107 @@ export const subscriptionApi = {
     }
     return data
   },
+  getAllAdmin: async (token, params = {}) => {
+    const query = new URLSearchParams(params).toString()
+    const res = await fetch(`${API_BASE}/subscriptions/admin/all?${query}`, {
+      headers: { Authorization: `Bearer ${token}` },
+      credentials: 'include',
+    })
+    const data = await res.json()
+    if (!res.ok) throw new Error(data.message || 'Failed to fetch subscriptions')
+    return data.data
+  },
+
+  getStatsAdmin: async (token) => {
+    const res = await fetch(`${API_BASE}/subscriptions/admin/stats`, {
+      headers: { Authorization: `Bearer ${token}` },
+      credentials: 'include',
+    })
+    const data = await res.json()
+    if (!res.ok) throw new Error(data.message || 'Failed to fetch subscription stats')
+    return data.data
+  },
+
+  getPlans: async () => {
+    const res = await fetch(`${API_BASE}/subscriptions/plans`, {
+      credentials: 'include',
+    })
+    const data = await res.json()
+    if (!res.ok) {
+      throw new Error(data.message || 'Failed to fetch subscription plans')
+    }
+    return data.data
+  },
+  getPlansAdmin: async (token) => {
+    const res = await fetch(`${API_BASE}/subscriptions/admin/plans`, {
+      headers: { Authorization: `Bearer ${token}` },
+      credentials: 'include',
+    })
+    const data = await res.json()
+    if (!res.ok) {
+      throw new Error(data.message || 'Failed to fetch subscription plans')
+    }
+    return data.data
+  },
+
+  createPlanAdmin: async (token, payload) => {
+    const res = await fetch(`${API_BASE}/subscriptions/admin/plans`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+      credentials: 'include',
+      body: JSON.stringify(payload),
+    })
+    const data = await res.json()
+    if (!res.ok) {
+      throw new Error(data.message || 'Failed to create subscription plan')
+    }
+    return data.data
+  },
+
+  updatePlanAdmin: async (token, planId, payload) => {
+    const res = await fetch(`${API_BASE}/subscriptions/admin/plans/${planId}`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+      credentials: 'include',
+      body: JSON.stringify(payload),
+    })
+    const data = await res.json()
+    if (!res.ok) {
+      throw new Error(data.message || 'Failed to update subscription plan')
+    }
+    return data.data
+  },
+
+  deletePlanAdmin: async (token, planId) => {
+    const res = await fetch(`${API_BASE}/subscriptions/admin/plans/${planId}`, {
+      method: 'DELETE',
+      headers: { Authorization: `Bearer ${token}` },
+      credentials: 'include',
+    })
+    const data = await res.json()
+    if (!res.ok) {
+      throw new Error(data.message || 'Failed to delete subscription plan')
+    }
+    return data.data
+  },
+  updateAdmin: async (token, subscriptionId, payload) => {
+    const res = await fetch(`${API_BASE}/subscriptions/admin/${subscriptionId}`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+      credentials: 'include',
+      body: JSON.stringify(payload),
+    })
+    const data = await res.json()
+    if (!res.ok) throw new Error(data.message || 'Failed to update subscription')
+    return data.data
+  },
 }
