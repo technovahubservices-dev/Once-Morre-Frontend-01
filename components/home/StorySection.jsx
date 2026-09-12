@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-
+import aboutImage from '../../assets/images/about-image.png'
 export default function StorySection() {
   return (
     <section id="about" className="bg-white">
@@ -8,7 +8,7 @@ export default function StorySection() {
           <div className="relative flex justify-center">
             <div className="aspect-[4/5] w-full max-w-lg overflow-hidden rounded-xl border border-line bg-white shadow-[0_8px_28px_rgba(15,82,56,0.08)]">
               <img
-                src="/assets/images/about%20image.png"
+                src={aboutImage}
                 alt="Our dairy farm"
                 className="h-full w-full object-cover"
               />
@@ -41,11 +41,11 @@ export default function StorySection() {
               </h3>
 
               <p className="font-body-md text-base md:text-lg text-muted mb-5 leading-relaxed">
-                For over three generations, ONCE MORRE has been synonymous with purity and quality. Our dairy products are crafted using traditional methods passed down through our family, ensuring the richest taste and highest nutritional value.
+                For over three generations, ONCE MORRE has stood for purity and quality. Our dairy products are made using traditional family methods, bringing you the rich taste and natural goodness we've trusted for years.
               </p>
 
               <p className="font-body-md text-base md:text-lg text-muted leading-relaxed">
-                From the gentle hand-churning of butter to the slow fermentation of curd, every step is performed with care and respect for nature's goodness.
+                From hand-churning our butter to slowly fermenting our curd, we take care with every step. We believe in keeping things simple, using time-tested methods and respecting the goodness of nature.
               </p>
             </div>
 
@@ -63,20 +63,3 @@ export default function StorySection() {
     </section>
   )
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
