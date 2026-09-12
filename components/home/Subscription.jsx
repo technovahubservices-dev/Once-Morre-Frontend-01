@@ -1,47 +1,35 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { subscriptionApi } from '../../services/subscriptionApi.js'
 import { useAuth } from '../../context/AuthContext.jsx'
 
-const plans = [
-  {
-    id: '30-days',
-    duration: '30 DAYS',
-    regularPrice: '₹2,100',
-    offerPrice: '₹1,800',
-    savings: 'SAVE ₹300',
-    productId: '6a9a93e19ca81ce3900178fd',
-    originalPrice: 2100,
-    offerPriceValue: 1800,
-    popular: false,
-  },
-  {
-    id: '90-days',
-    duration: '90 DAYS',
-    regularPrice: '₹5,600',
-    offerPrice: '₹4,999',
-    savings: 'SAVE ₹601',
-    productId: '6a9a93e19ca81ce3900178fd',
-    originalPrice: 5600,
-    offerPriceValue: 4999,
-    popular: true,
-  },
-  {
-    id: '180-days',
-    duration: '180 DAYS',
-    regularPrice: '₹11,600',
-    offerPrice: '₹8,999',
-    savings: 'SAVE ₹2,601',
-    productId: '6a9a93e19ca81ce3900178fd',
-    originalPrice: 11600,
-    offerPriceValue: 8999,
-    popular: false,
-  },
-]
-
 export default function Subscription() {
   const { token } = useAuth()
+  const [plans, setPlans] = useState([])
   const [loading, setLoading] = useState({})
   const [message, setMessage] = useState({})
+  const [plansLoading, setPlansLoading] = useState(true)
+
+  useEffect(() => {
+    const loadPlans = async () => {
+      try {
+        const data = await subscriptionApi.getPlans()
+
+        setPlans(
+          data.map((plan) => ({
+            ...plan,
+            id: plan._id,
+            savings: `SAVE ₹${plan.originalPrice - plan.offerPrice}`,
+          }))
+        )
+      } catch (err) {
+        console.error('Failed to load subscription plans:', err)
+      } finally {
+        setPlansLoading(false)
+      }
+    }
+
+    loadPlans()
+  }, [])
 
   const handleActivate = async (plan) => {
     if (!token) {
@@ -54,10 +42,9 @@ export default function Subscription() {
 
     try {
       await subscriptionApi.activate(token, {
-        productId: plan.productId,
         plan: plan.duration,
         quantity: 1,
-        offerPrice: plan.offerPriceValue,
+        offerPrice: plan.offerPrice,
         originalPrice: plan.originalPrice,
       })
 
@@ -178,7 +165,7 @@ export default function Subscription() {
                       </div>
                     </div>
 
-                    {/* SAVE BADGE � ONLY ONCE */}
+                    {/* SAVE BADGE ï¿½ ONLY ONCE */}
                     <span
                       className={`shrink-0 px-2.5 py-1.5 rounded-full text-[10px] font-extrabold tracking-wide uppercase ${
                         plan.popular
@@ -211,11 +198,11 @@ export default function Subscription() {
                 {/* OFFER + REGULAR PRICE */}
                 <div className="flex items-baseline gap-3">
                   <span className="font-serif text-[30px] font-bold leading-none text-[#081E17]">
-                    {plan.offerPrice}
+                    ₹{plan.offerPrice.toLocaleString()}
                   </span>
 
                   <span className="text-[14px] text-[#566761]/70 line-through">
-                    {plan.regularPrice}
+                    ₹{plan.originalPrice.toLocaleString()}
                   </span>
                 </div>
 
@@ -225,7 +212,7 @@ export default function Subscription() {
                   </p>
 
                   <p className="text-[14px] text-[#566761]">
-                    {plan.regularPrice}
+                    ₹{plan.originalPrice.toLocaleString()}
                   </p>
                 </div>
 
@@ -312,7 +299,3 @@ export default function Subscription() {
     </section>
   )
 }
-
-
-
-
