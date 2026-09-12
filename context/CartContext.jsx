@@ -117,6 +117,44 @@ export function CartProvider({ children }) {
         })
         .filter(Boolean)
 
+      if (backendItems.length === 0) {
+        const stored = localStorage.getItem('cart')
+
+        if (stored) {
+          try {
+            const localItems = JSON.parse(stored)
+
+            if (Array.isArray(localItems) && localItems.length > 0) {
+              for (const item of localItems) {
+                const productId = item?._id || item?.id
+
+                if (!productId || productId.length !== 24) continue
+
+                await fetch(`${API_BASE}/cart/add`, {
+                  method: 'POST',
+                  headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${token}`,
+                  },
+                  credentials: 'include',
+                  body: JSON.stringify({
+                    productId,
+                    quantity: item.quantity || 1,
+                    size: item.size,
+                    variant: item.variant || null,
+                  }),
+                })
+              }
+
+              await loadBackendCart()
+              return
+            }
+          } catch {
+            // Ignore invalid local cart data.
+          }
+        }
+      }
+
       saveLocal(backendItems)
     } catch {
       // Keep current local cart if backend request fails.
@@ -230,7 +268,45 @@ export function CartProvider({ children }) {
     })
   }
 
-  const removeItem = (productId, variant = null) => {
+  const removeItem = async (productId, variant = null) => {
+    const itemToRemove = items.find((item) => {
+      if (item._id !== productId) return false
+
+      const itemVariantName = item.variant?.name || ''
+      const itemVariantQuantity = item.variant?.quantity || ''
+
+      const removeVariantName = variant?.name || ''
+      const removeVariantQuantity = variant?.quantity || ''
+
+      return (
+        itemVariantName === removeVariantName &&
+        itemVariantQuantity === removeVariantQuantity
+      )
+    })
+
+    if (isAuthenticated && token && itemToRemove?._backendItemId) {
+      try {
+        const res = await fetch(
+          `${API_BASE}/cart/remove/${itemToRemove._backendItemId}`,
+          {
+            method: 'DELETE',
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+            credentials: 'include',
+          }
+        )
+
+        if (!res.ok) {
+          console.error('Failed to remove item from backend cart')
+          return
+        }
+      } catch (error) {
+        console.error('Failed to remove item from backend cart:', error)
+        return
+      }
+    }
+
     setItems((prev) => {
       const next = prev.filter((item) => {
         if (item._id !== productId) return true
@@ -251,7 +327,6 @@ export function CartProvider({ children }) {
       return next
     })
   }
-
   const updateQuantity = (productId, quantity) => {
     if (quantity <= 0) {
       removeItem(productId)
@@ -313,20 +388,3 @@ export function useCart() {
 
   return context
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
