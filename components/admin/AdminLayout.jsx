@@ -9,6 +9,7 @@ const navItems = [
   { label: 'Products', icon: 'shopping_bag', href: '/admin/products' },
   { label: 'Categories', icon: 'category', href: '/admin/categories' },
   { label: 'Orders', icon: 'receipt_long', href: '/admin/orders' },
+  { label: 'Subscriptions', icon: 'autorenew', href: '/admin/subscriptions' },
   { label: 'Inventory', icon: 'inventory_2', href: '/admin/inventory' },
   { label: 'Users', icon: 'people', href: '/admin/users' },
   { label: 'Blogs', icon: 'article', href: '/admin/blogs' },
@@ -234,16 +235,3 @@ function AdminLayoutContent() {
 export default function AdminLayout() {
   return <GoogleDriveProvider><AdminLayoutContent /></GoogleDriveProvider>
 }
-
-
-
-
-
-
-
-
-
-
-
-
-

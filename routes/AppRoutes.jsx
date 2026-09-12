@@ -40,6 +40,7 @@ import Dashboard from '../pages/admin/Dashboard.jsx'
 import AdminProducts from '../pages/admin/AdminProducts.jsx'
 import AdminCategories from '../pages/admin/AdminCategories.jsx'
 import AdminOrders from '../pages/admin/AdminOrders.jsx'
+import AdminSubscriptions from '../pages/admin/AdminSubscriptions.jsx'
 import AdminInventory from '../pages/admin/AdminInventory.jsx'
 import AdminUsers from '../pages/admin/AdminUsers.jsx'
 import AdminBlogs from '../pages/admin/AdminBlogs.jsx'
@@ -65,6 +66,7 @@ function AppContent() {
           <Route path="products" element={<AdminProducts />} />
           <Route path="categories" element={<AdminCategories />} />
           <Route path="orders" element={<AdminOrders />} />
+          <Route path="subscriptions" element={<AdminSubscriptions />} />
           <Route path="inventory" element={<AdminInventory />} />
           <Route path="users" element={<AdminUsers />} />
           <Route path="blogs" element={<AdminBlogs />} />
@@ -127,16 +129,3 @@ export default function AppRoutes() {
     </div>
   )
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
