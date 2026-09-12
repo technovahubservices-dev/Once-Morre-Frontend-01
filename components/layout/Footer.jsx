@@ -25,9 +25,8 @@ export default function Footer() {
               <div className="mt-4 mb-5 h-1 w-12 rounded-full bg-[#D7A64A]" />
 
               <p className="relative text-white/80 font-body-md text-sm leading-7 max-w-sm">
-                Pure dairy goodness delivered from our farms to your home. Fresh, natural, and crafted with care since generations.
+Fresh dairy from our farms to your home. Natural, simple, and made with care for generations.
               </p>
-
               <div className="mt-6 flex items-center gap-2 text-[#E9C47E] text-xs font-semibold tracking-widest uppercase">
                 <span className="material-symbols-outlined text-[17px]">
                   verified
@@ -196,7 +195,7 @@ export default function Footer() {
           <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
 
             <p className="text-white/75 font-body-md text-xs sm:text-sm text-center sm:text-left">
-              © 2026 Morre Premium Dairy. All Rights Reserved
+              ï¿½ 2026 Morre Premium Dairy. All Rights Reserved
             </p>
 
             <a
